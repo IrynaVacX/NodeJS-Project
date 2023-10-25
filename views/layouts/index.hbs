@@ -5,16 +5,21 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/site.css">
     <link rel="stylesheet" href="css/menu-styles.css">
+    <link rel="stylesheet" href="css/chat-styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
 </head>
-
 <body>
     <div>
         {{{body}}}
     </div>
 </body>
+
+{{!-- connecting the Socket.io library directly from CDN --}}
+{{!-- (Content Delivery Network)  to work with game-chat --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js'></script>
 

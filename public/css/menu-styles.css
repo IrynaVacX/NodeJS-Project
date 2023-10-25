@@ -1,5 +1,6 @@
 .menu-container
 {
+    position: absolute;
     display: flex; 
     top: 0;
     left: 0;
@@ -22,15 +23,16 @@
     position: absolute;
     top: 10%;
     left: calc( 50% - 275px );
-    height: 150px;
+    height: 120px;
     width: 550px;
-    font-size: 74pt;
+    font-size: 80pt;
     color: rgb(255, 255, 255);
-    
+    text-align: center;
+    /* background-color: rgb(54, 11, 94); */
 }
 .menu-center-navigation a
 {
-    font-size: 20pt;
+    font-size: 26pt;
     margin-bottom: 10px;
     color: rgb(161, 130, 161);
     text-decoration: none;
@@ -38,7 +40,65 @@
 }
 .menu-center-navigation a:hover
 {
-    font-size: 24pt;
+    font-size: 30pt;
     color: rgb(235, 172, 235);
     transition: all 0.8s cubic-bezier(0.22, 1, 0.22, 1); 
+}
+
+
+
+/********* MENU-CHAT *********/
+.menu-chat
+{
+    position: absolute;
+    display: grid; 
+    left: 20px;
+    bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+}
+#chatContainer
+{
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 500px;
+    max-width: 400px;
+    min-height: 300px;
+    min-width: 300px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+.menu-chat-message
+{
+    padding: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.menu-chat-username
+{
+    font-weight: bold;
+    color: #d43cc0;
+}
+.menu-chat-text
+{
+    color: #e2b0dc;
+}
+.menu-chat button
+{
+    -webkit-writing-mode: horizontal-tb !important;
+    -webkit-appearance: button;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-style: solid;
+    border-width: 1px;
+    padding: 1px 7px 2px;
+    text-rendering: auto;
+    color: initial;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 400 11px system-ui;
+}
+
+.menu-chat-inp_btn
+{
+    display: flex;
 }
