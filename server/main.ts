@@ -5,7 +5,16 @@ import { Server } from "socket.io";
 const PORT = 4000;
 let connect = connection;
 
+<<<<<<< Updated upstream
 //////// NAVIGATION ////////
+=======
+const getTimestamp = () => {
+    return connection.query('SELECT CURRENT_TIMESTAMP');
+};
+console.log(await getTimestamp());
+
+
+>>>>>>> Stashed changes
 app.get('/', (req, res) => {
     res.render('main', {
         layout: "index",
@@ -29,12 +38,23 @@ app.get('/loader', (req, res) => {
     res.render('loader', {
         layout: "index",
     })
+<<<<<<< Updated upstream
 })
+=======
+});
+
+app.get('/menu', (req, res) => {
+    res.render('menu', {
+        layout: "index",
+    })
+});
+>>>>>>> Stashed changes
 
 app.get('*', (req, res) => {
     res.render('main');
 });
 
+<<<<<<< Updated upstream
 
 //////// SERVER RUN ////////
 const server = app.listen(PORT, () => {
@@ -58,3 +78,8 @@ io.on("connection", (socket) => {
         console.log("Disconnected");
     });
 });
+=======
+app.listen(PORT, () => {
+    console.log("Server ready at: ", `http://localhost:${PORT}/`);
+});
+>>>>>>> Stashed changes
