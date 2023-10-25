@@ -4,8 +4,8 @@ import { resolve } from "path";
 const app = express();
 
 app.use(express.static("public"))
-app.use(express.json)
-app.use(express.text)
+app.use(express.json())
+app.use(express.text())
 
 app.set("view engine", "hbs");
 app.engine("hbs", engine({
