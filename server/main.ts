@@ -8,6 +8,7 @@ app.get('/', (req, res) => {
         layout: "index",
     })
 })
+let connect=connection;
 app.get('/registration', (req, res) => {
     res.render('reg', {
         layout: "index",
