@@ -1,6 +1,9 @@
 html, body * { box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
 
 body {
+  margin: 0;
+  padding: 0;
+  
   background:
     -webkit-linear-gradient(
     rgba(246,247,249,0.8),

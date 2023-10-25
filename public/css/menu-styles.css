@@ -1,0 +1,44 @@
+.menu-container
+{
+    display: flex; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    min-height: 100vh;
+    min-width: 100vw;
+    /* background: url("../resources/menu-bg.png"); */
+    background-color: blueviolet;
+}
+.menu-center-navigation
+{
+    display: grid;
+    margin: auto;
+    text-align: center;
+}
+.menu-center-name h1
+{
+    position: absolute;
+    top: 10%;
+    left: calc( 50% - 275px );
+    height: 150px;
+    width: 550px;
+    font-size: 74pt;
+    color: rgb(255, 255, 255);
+    
+}
+.menu-center-navigation a
+{
+    font-size: 20pt;
+    margin-bottom: 10px;
+    color: rgb(161, 130, 161);
+    text-decoration: none;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.22, 1); 
+}
+.menu-center-navigation a:hover
+{
+    font-size: 24pt;
+    color: rgb(235, 172, 235);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.22, 1); 
+}
