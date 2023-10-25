@@ -15,6 +15,12 @@ app.get('/registration', (req, res) => {
     })
 })
 
+app.get('/loader', (req, res) => {
+    res.render('loader', {
+        layout: "index",
+    })
+})
+
 app.get('*', (req, res) => {
     res.render('main');
 })
