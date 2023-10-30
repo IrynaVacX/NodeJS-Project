@@ -1,15 +1,18 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const inputMessage = document.getElementById("inputMessage");
+    const sendButton = document.getElementById("sendButton");
+
+    sendButton.addEventListener("click", () => {
+        const message = inputMessage.value;
+        socket.emit("chat message", message);
+        inputMessage.value = "";
+    });
+    
+});
+
 ///////// MENU-CHAT /////////
 const socket = io();
-
 const chatContainer = document.getElementById("chatContainer");
-const inputMessage = document.getElementById("inputMessage");
-const sendButton = document.getElementById("sendButton");
-
-sendButton.addEventListener("click", () => {
-    const message = inputMessage.value;
-    socket.emit("chat message", message);
-    inputMessage.value = "";
-});
 
 socket.on("chat message", (msg) => {
     const messageElem = document.createElement("div");
