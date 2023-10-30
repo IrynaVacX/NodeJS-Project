@@ -15,5 +15,4 @@ app.engine("hbs", engine({
 }));
 
 
-
-export { app };
+export default app;
