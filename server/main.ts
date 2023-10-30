@@ -1,38 +1,17 @@
-import { app } from "./server";
+import app from "./server";
 import { connection } from "./db";
-const PORT = 4000;
+import dotenv from "dotenv"
+import { homeRouter } from "./routes/homeRouter";
 
+let connect = connection;
 
-app.get('/', (req, res) => {
-    res.render('main', {
-        layout: "index",
-    });
-});
+dotenv.config();
 
-app.get('/menu', (req, res) => {
-    res.render('menu', {
-        layout: "index",
-    })
-});
-
-let connect=connection;
-
-app.get('/registration', (req, res) => {
-    res.render('reg', {
-        layout: "index",
-    })
-});
-
-app.get('/loader', (req, res) => {
-    res.render('loader', {
-        layout: "index",
-    })
-})
-
-app.get('*', (req, res) => {
+app.use('/', homeRouter);
+app.use((req, res) => {
     res.render('main');
 });
 
-app.listen(PORT, () => {
-    console.log("Server ready at: ", `http://localhost:${PORT}/`);
+app.listen(Number(process.env.PORT), () => {
+    console.log("Server ready at: ", `http://localhost:${process.env.PORT}/`);
 });

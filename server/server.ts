@@ -14,4 +14,6 @@ app.engine("hbs", engine({
     defaultLayout: "notFound"
 }));
 
-export { app };
+
+
+export default app; 

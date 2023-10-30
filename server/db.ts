@@ -22,5 +22,4 @@ const configureDB = async () => {
     }
 }
 await configureDB();
-
 export { connection };
