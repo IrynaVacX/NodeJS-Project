@@ -1,8 +1,7 @@
-import app from "./server";
+import   app          from "./server";
 import { connection } from "./db";
-import dotenv from "dotenv";
 import { homeRouter } from "./routes/homeRouter";
-
+import   dotenv       from "dotenv";
 import { Server } from "socket.io";
 
 let connect = connection;
@@ -21,18 +20,28 @@ const server = app.listen(Number(process.env.PORT), () => {
 
 ////// CREATE SESSION //////
 const io = new Server(server);
+const usernames = {};
 
 io.on("connection", (socket) => {
-    // join to global game chat
-    socket.join("main-menu-room");
-    console.log("Connected");
+    //console.log("User connected", socket.id); //#comment
 
-    socket.on("chat message", (msg) => {
-        io.to("main-menu-room").emit("chat message", msg);
+    // join to global game chat
+    socket.on("main-menu-chat", (username) => {
+        socket.join("main-menu-chat");
+        usernames[socket.id] = username;
+        io.to("main-menu-chat").emit("infoMessage", `${usernames[socket.id]} joined the chat`);
+        //console.log("User join", usernames[socket.id]); //#comment
     });
 
+    // send messages
+    socket.on("sendMessage", (message) => {
+        io.to("main-menu-chat").emit("receiveMessage", { username: usernames[socket.id], message: message });
+    });
+
+    // disconnect from game chat
     socket.on("disconnect", () => {
-        io.to("main-menu-room").emit("chat message", "Disconnected");
-        console.log("Disconnected");
+        io.to("main-menu-chat").emit("infoMessage", `${usernames[socket.id]} left the chat`);
+        delete usernames[socket.id];
+        //console.log("User disconnected", socket.id); //#comment
     });
 });

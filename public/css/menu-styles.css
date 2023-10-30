@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+:root {
+    --scrollbar-color: #77097a;
+    --chat-name-color: #c82ece;
+    --chat-msg-color: #931597;
+    --info-msg-color: #e4a723;
+    --font-family-game-name: 'Indie Flower', cursive;
+    /* --chat-name-color: #077fcf;
+    --chat-msg-color: #0f5fa0;
+    --info-msg-color: #cf9a07; */
+}
+
 .menu-container
 {
+    overflow: hidden;
     position: absolute;
     display: flex; 
     top: 0;
@@ -9,47 +22,68 @@
     margin: auto;
     min-height: 100vh;
     min-width: 100vw;
-    /* background: url("../resources/menu-bg.png"); */
-    background-color: blueviolet;
+    background: url("../assets/Menu/menu-bg.png");
+    background-size: cover;
+    background-position: 50%;
+}
+.menu-center-name
+{
+    z-index: 1;
+    position: absolute;
+    display: grid;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+.menu-center-name span
+{
+    height: 180px;
+    width: 700px;
+    color: rgb(255, 255, 255);
+    font-size: 96pt;
+    font-family: var(--font-family-game-name);
+    text-shadow: 2px 2px 5px #0000009a;
+}
+.menu-center-name lable
+{
+    height: 70px;
+    width: 700px;
+    color: rgb(255, 255, 255);
+    font-size: 60pt;
+    font-family: var(--font-family-game-name);
+    text-shadow: 1px 1px 2px #0000009a;
 }
 .menu-center-navigation
 {
+    z-index: 3;
     display: grid;
     margin: auto;
     text-align: center;
 }
-.menu-center-name h1
+.menu-center-navigation button
 {
-    position: absolute;
-    top: 10%;
-    left: calc( 50% - 275px );
-    height: 120px;
-    width: 550px;
-    font-size: 80pt;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    /* background-color: rgb(54, 11, 94); */
-}
-.menu-center-navigation a
-{
-    font-size: 26pt;
+    cursor: pointer;
+    overflow: hidden;
     margin-bottom: 10px;
-    color: rgb(161, 130, 161);
-    text-decoration: none;
-    transition: all 0.8s cubic-bezier(0.22, 1, 0.22, 1); 
+    height: 72px;
+    width: 200px;
+    color: #fff;
+    font-size: 27px;
+    font-family: 'Raleway', sans-serif;
+    border: none;
+    border-radius: 8px;
+    background: var(--btn-bg-color);
+    transition: all .3s cubic-bezier(.6,0,.4,1);
 }
-.menu-center-navigation a:hover
-{
-    font-size: 30pt;
-    color: rgb(235, 172, 235);
-    transition: all 0.8s cubic-bezier(0.22, 1, 0.22, 1); 
-}
-
+.menu-center-navigation button:hover { background: var(--btn-bg-hover-color); }
+.menu-center-navigation button:active { background: var(--btn-bg-active-color); }
 
 
 /********* MENU-CHAT *********/
 .menu-chat-container
 {
+    z-index: 2;
     position: absolute;
     display: grid;
     left: 20px;
@@ -80,7 +114,7 @@
 }
 #chatContainer::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #891b8d;
+    background-color: var(--scrollbar-color);
 }
 #chatContainer::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
@@ -96,14 +130,20 @@
     padding: 5px;
     word-wrap: break-word;
 }
+.menu-chat-info
+{
+    font-weight: bold;
+    color: var(--info-msg-color);
+    font-style: italic;
+}
 .menu-chat-username
 {
     font-weight: bold;
-    color: #d43cc0;
+    color: var(--chat-name-color);
 }
 .menu-chat-text
 {
-    color: #e2b0dc;
+    color: var(--chat-msg-color);
     text-overflow: clip;
 }
 /*** INPUT/BUTTON SEND MSG **/
@@ -129,12 +169,39 @@
     height: 50px;
     width: 100px;
     font-size: 16pt;
-    background-color: rgb(129, 87, 196);
+    background-color: var(--btn-bg-color);
     border-radius: 0px 0px 15px 0px;
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+}
+.menu-chat-container-inp_btn button:hover
+{
+    background-color: var(--btn-bg-hover-color);
 }
 .menu-chat-container-inp_btn button:active
 {
-    color: rgb(137, 115, 173);
-    background-color: rgb(82, 49, 134);
-    transition: all .3s cubic-bezier(.6,0,.4,1);
+    background-color: var(--btn-bg-active-color);
+}
+
+
+/******* MENU OPTIONS *******/
+.menu-center-options
+{
+    z-index: 3;
+    display: none;
+    padding: 15px;
+    margin: auto;
+    margin-top: 313px;
+    text-align: center;
+    background-color: #0000007a;
+    border-radius: 15px;
+    font-size: 27px;
+}
+.menu-center-options span
+{
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.menu-center-options button i
+{
+    font-style: normal;
 }

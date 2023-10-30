@@ -1,15 +1,25 @@
 <div>
     <div class="menu-container">
         <div class="menu-center-name">
-            <h1>GameName</h1>
+            <span>Kitty Combat</span>
+            <lable>Toad-Titans</lable>
         </div>
-        <div class="menu-center-navigation">
-            <a href="#1">Single Play</a>
-            <a href="#2">Play with Friends</a>
-            <a href="#3">Options</a>
-            <a href="#4">Exit</a>
+        <div id="idMainMenuNavBtn" class="menu-center-navigation">
+            <button id="btnNewGame" onclick="#1">New Game</button>
+            <button id="btnOptions" onclick="openOptionsClick()">Options</button>
+            <button id="btnExit" onclick="#0">Exit</button>
+        </div>
+
+        <div id="idMainMenuOptions" class="menu-center-options">
+            <span>OPTIONS</span>
+            <button>Sound <i id="isSoundOn">ON</i></button>
+            <button onclick="fullscreenTurnClick()">Fullscreen <i id="isFullscreenOn">OFF</i></button>
+            <button>Chat History</button>
+            <button onclick="closeOptionsClick()">Back</button>
         </div>
     </div>
+
+
 
     <div class="menu-chat-container">
         <div id="chatContainer">
@@ -17,7 +27,74 @@
         </div>
         <div class="menu-chat-container-inp_btn">
             <input id="inputMessage" placeholder="Type your message...">
-            <button id="sendButton">Send</button>
+            <button id="sendButton" onclick="sendMessage()">Send</button>
         </div>
     </div>
 </div>
+
+
+{{!-- connecting the Socket.io library directly from CDN --}}
+{{!-- (Content Delivery Network)  to work with game-chat --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    //const username = "Aswd";
+    const username = prompt("Enter your username : ");
+
+    socket.emit("main-menu-chat", username);
+
+    socket.on("receiveMessage", (data) => {
+        const msgElem = document.createElement("div");
+        msgElem.className = "menu-chat-message";
+        msgElem.innerHTML = `<span class="menu-chat-username">${data.username}:</span> <span class="menu-chat-text">${data.message}</span>`;
+        chatContainer.appendChild(msgElem);
+        msgElem.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+
+    socket.on("infoMessage", (message) => {
+        const msgElem = document.createElement("div");
+        msgElem.className = "menu-chat-message";
+        msgElem.innerHTML = `<span class="menu-chat-info">${message}</span>`;
+        chatContainer.appendChild(msgElem);
+        msgElem.scrollIntoView({ block: "center", behavior: "smooth" });
+    })
+    
+    function sendMessage()
+    {
+        const msgElem = document.getElementById("inputMessage");
+        socket.emit("sendMessage", msgElem.value);
+        msgElem.value = '';
+    }
+
+</script>
+<script>
+    function openOptionsClick()
+    {
+        document.getElementById("idMainMenuNavBtn").style.display = "none";
+        document.getElementById("idMainMenuOptions").style.display = "grid";
+    }
+    function closeOptionsClick()
+    {
+        document.getElementById("idMainMenuNavBtn").style.display = "grid";
+        document.getElementById("idMainMenuOptions").style.display = "none";
+    }
+
+    function fullscreenTurnClick()
+    {
+        const elem = document.getElementById("isFullscreenOn");
+        if (document.fullscreenElement)
+        {
+            elem.innerText = "OFF";
+            elem.style.color = "red";
+            document.exitFullscreen();
+        }
+        else
+        {
+            elem.innerText = "ON";
+            elem.style.color = "green";
+            document.documentElement.requestFullscreen();
+        }
+    }
+
+</script>
