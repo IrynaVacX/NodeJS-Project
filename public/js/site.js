@@ -24,15 +24,16 @@ document.querySelector('form').addEventListener('submit', function(event) {
     }
 
     
-    sendDataToServer(action, nickname, pass);
+    sendDataToServer([ action, nickname, pass ]);
 });
 
-function sendDataToServer(action, nickname, password) {
-    let data = {
-        action: action,
-        nickname: nickname,
-        password: password
-    };
+function sendDataToServer(data)
+{
+    // let data = {
+    //     action: action,
+    //     nickname: nickname,
+    //     password: password
+    // };
 
     fetch('/registration', {
         method: 'POST',
@@ -45,7 +46,8 @@ function sendDataToServer(action, nickname, password) {
     .then(data => {
         if (data.success) {
             alert('Success!');
-        } else {
+        }
+        else {
             alert('Error: ' + data.message);
         }
     })

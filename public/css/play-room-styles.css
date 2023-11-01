@@ -1,0 +1,12 @@
+
+.free-move-zone
+{
+    display: block;
+    position: absolute;
+    height: 100vb;
+    width: 60vw;
+    background-color: rgb(129, 95, 160);
+    left: 50%;
+    transform: translate(-50%, 0);
+
+}

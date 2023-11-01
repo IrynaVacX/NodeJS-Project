@@ -1,0 +1,138 @@
+:root {
+    --scrollbar-color: #77097a;
+    --chat-name-color: #c82ece;
+    --chat-msg-color: #931597;
+    --info-msg-color: #e4a723;
+    --font-family-game-name: 'Indie Flower', cursive;
+}
+
+/********* MENU-CHAT *********/
+.chat-container
+{
+    z-index: 2;
+    position: absolute;
+    display: grid;
+    left: 20px;
+    bottom: 20px;
+    height: 420px;
+    max-width: 330px;
+    min-width: 310px;
+    font-family: 'Raleway', sans-serif;
+    background-color: rgba(255, 0, 0, 0);
+    border-radius: 15px 15px 15px 15px;
+    box-shadow: -5px 5px 7px rgba(0, 0, 0, 0.3);
+}
+#chatContainerMenu
+{
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 10px;
+    height: 350px;
+    max-width: 330px;
+    min-width: 310px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 15px 15px 0px 0px;
+}
+/** SCROLLBAR IN MENU CHAT **/
+#chatContainerMenu::-webkit-scrollbar {
+    width: 10px;
+    background-color: #00000000;
+}
+#chatContainerMenu::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--scrollbar-color);
+}
+#chatContainerMenu::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+#chatContainerMenu:hover {
+    overflow-y: auto;
+    transition: all 1s ease-in-out;
+}
+/* //////////// */
+#chatContainerGame
+{
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 10px;
+    height: 350px;
+    max-width: 330px;
+    min-width: 310px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 15px 15px 0px 0px;
+}
+/** SCROLLBAR IN PLAY CHAT **/
+#chatContainerGame::-webkit-scrollbar {
+    width: 10px;
+    background-color: #00000000;
+}
+#chatContainerGame::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--scrollbar-color);
+}
+#chatContainerGame::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+#chatContainerGame:hover {
+    overflow-y: auto;
+    transition: all 1s ease-in-out;
+}
+/******* CHAT MESSAGE *******/
+.chat-message
+{
+    padding: 5px;
+    word-wrap: break-word;
+}
+.chat-info
+{
+    font-weight: bold;
+    color: var(--info-msg-color);
+    font-style: italic;
+}
+.chat-username
+{
+    font-weight: bold;
+    color: var(--chat-name-color);
+}
+.chat-text
+{
+    color: var(--chat-msg-color);
+    text-overflow: clip;
+}
+/*** INPUT/BUTTON SEND MSG **/
+.chat-container-inp_btn
+{
+    display: flex;
+    height: 50px;
+    min-width: 300px;
+}
+.chat-container-inp_btn input
+{
+    height: 45px;
+    width: 220px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12pt;
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0px 0px 0px 15px;
+}
+.chat-container-inp_btn button
+{
+    height: 50px;
+    width: 100px;
+    font-size: 16pt;
+    background-color: var(--btn-bg-color);
+    border-radius: 0px 0px 15px 0px;
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+}
+.chat-container-inp_btn button:hover
+{
+    background-color: var(--btn-bg-hover-color);
+}
+.chat-container-inp_btn button:active
+{
+    background-color: var(--btn-bg-active-color);
+}

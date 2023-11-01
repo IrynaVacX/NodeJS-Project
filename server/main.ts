@@ -23,25 +23,37 @@ const io = new Server(server);
 const usernames = {};
 
 io.on("connection", (socket) => {
-    //console.log("User connected", socket.id); //#comment
 
     // join to global game chat
-    socket.on("main-menu-chat", (username) => {
-        socket.join("main-menu-chat");
+    socket.on("menu-chat", (username) => {
+        socket.join("menu-chat");
         usernames[socket.id] = username;
-        io.to("main-menu-chat").emit("infoMessage", `${usernames[socket.id]} joined the chat`);
-        //console.log("User join", usernames[socket.id]); //#comment
+        io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} joined the chat`, type: "menu-chat" });
+    });
+    // send messages to menu chat
+    socket.on("sendMessageMenu", (message) => {
+        io.to("menu-chat").emit("receiveMessage", { username: usernames[socket.id], message: message, type: "menu-chat" });
+    });
+    // disconnect from menu chat
+    socket.on("disconnect", () => {
+        io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} left the chat`, type: "menu-chat" });
+        delete usernames[socket.id];
     });
 
-    // send messages
-    socket.on("sendMessage", (message) => {
-        io.to("main-menu-chat").emit("receiveMessage", { username: usernames[socket.id], message: message });
+    // join to global game chat
+    socket.on("game-chat", (username) => {
+        socket.join("game-chat");
+        usernames[socket.id] = username;
+        io.to("game-chat").emit("infoMessage", { message: `${usernames[socket.id]} joined the chat`, type: "game-chat" });
     });
-
+    // send messages to game chat
+    socket.on("sendMessageGame", (message) => {
+        io.to("game-chat").emit("receiveMessage", { username: usernames[socket.id], message: message, type: "game-chat" });
+    });
     // disconnect from game chat
     socket.on("disconnect", () => {
-        io.to("main-menu-chat").emit("infoMessage", `${usernames[socket.id]} left the chat`);
+        io.to("game-chat").emit("infoMessageGame", { message: `${usernames[socket.id]} left the chat`, type: "game-chat" });
         delete usernames[socket.id];
-        //console.log("User disconnected", socket.id); //#comment
     });
+    
 });

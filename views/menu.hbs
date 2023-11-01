@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="css/menu-styles.css">
+<link rel="stylesheet" href="css/chat-styles.css">
+
+
 <div>
     <div class="menu-container">
         <div class="menu-center-name">
@@ -5,7 +9,7 @@
             <lable>Toad-Titans</lable>
         </div>
         <div id="idMainMenuNavBtn" class="menu-center-navigation">
-            <button id="btnNewGame" onclick="#1">New Game</button>
+            <button id="btnNewGame" onclick="startPlay()">New Game</button>
             <button id="btnOptions" onclick="openOptionsClick()">Options</button>
             <button id="btnExit" onclick="#0">Exit</button>
         </div>
@@ -21,13 +25,13 @@
 
 
 
-    <div class="menu-chat-container">
-        <div id="chatContainer">
+    <div class="chat-container">
+        <div id="chatContainerMenu">
             <!-- Chat Messages Place -->
         </div>
-        <div class="menu-chat-container-inp_btn">
-            <input id="inputMessage" placeholder="Type your message...">
-            <button id="sendButton" onclick="sendMessage()">Send</button>
+        <div class="chat-container-inp_btn">
+            <input id="inputMessageMenu" placeholder="Type your message...">
+            <button id="sendButtonMenu" onclick="sendMessageMenu()">Send</button>
         </div>
     </div>
 </div>
@@ -38,36 +42,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
     const socket = io();
-
     //const username = "Aswd";
     const username = prompt("Enter your username : ");
-
-    socket.emit("main-menu-chat", username);
-
-    socket.on("receiveMessage", (data) => {
-        const msgElem = document.createElement("div");
-        msgElem.className = "menu-chat-message";
-        msgElem.innerHTML = `<span class="menu-chat-username">${data.username}:</span> <span class="menu-chat-text">${data.message}</span>`;
-        chatContainer.appendChild(msgElem);
-        msgElem.scrollIntoView({ block: "center", behavior: "smooth" });
-    });
-
-    socket.on("infoMessage", (message) => {
-        const msgElem = document.createElement("div");
-        msgElem.className = "menu-chat-message";
-        msgElem.innerHTML = `<span class="menu-chat-info">${message}</span>`;
-        chatContainer.appendChild(msgElem);
-        msgElem.scrollIntoView({ block: "center", behavior: "smooth" });
-    })
+    socket.emit("menu-chat", username);
     
-    function sendMessage()
+    function sendMessageMenu()
     {
-        const msgElem = document.getElementById("inputMessage");
-        socket.emit("sendMessage", msgElem.value);
+        const msgElem = document.getElementById("inputMessageMenu");
+        socket.emit("sendMessageMenu", msgElem.value);
         msgElem.value = '';
+    
     }
-
 </script>
+<script src="js/chat.js"></script>
+
+{{!-- SCRIPT FOR OPTIONS --}}
 <script>
     function openOptionsClick()
     {
@@ -97,4 +86,11 @@
         }
     }
 
+</script>
+{{!-- SCRIPT FOR STARTPLAY --}}
+<script>
+    function startPlay()
+    {
+        window.location = window.location.pathname.split("/")[0] + "/game-room";
+    }
 </script>
