@@ -20,6 +20,16 @@ const configureDB = async () => {
             \`created\` DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP)
         )`);
     }
+    
+    // await connection.query(`DROP TABLE GlobalChat`);
+    // if (true) {
+    //     await connection.query(`CREATE TABLE GlobalChat(
+    //         \`id\` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    //         \`name\` VARCHAR(15) NULL,
+    //         \`message\` VARCHAR(255) NOT NULL
+    //     )`);
+    // }
+
 }
 await configureDB();
 export { connection };
