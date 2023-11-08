@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="css/war-area.css">
+<link rel="stylesheet" href="css/chat-styles.css">
+
+
+<div>
+    <section name="play-free-move-zone" class="free-move-zone">
+        <div class="enemy"></div>
+        <div class="first-cat">1</div>
+        <div class="second-cat">2</div>
+        <div class="third-cat">3</div>
+        <div class="abilities"></div>
+        <!-- /// -->
+    </section>
+
+
+    <div class="chat-container">
+        <div id="chatContainerGame">
+            <!-- Chat Messages Place -->
+        </div>
+        <div class="chat-container-inp_btn">
+            <input id="inputMessageGame" placeholder="Type your message...">
+            <button id="sendButtonGame" onclick="sendMessageGame()">Send</button>
+        </div>
+    </div>
+</div>
+
+
+{{!-- connecting the Socket.io library directly from CDN --}}
+{{!-- (Content Delivery Network)  to work with game-chat --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+    const socket = io();
+    //const username = "Aswd";
+    const username = prompt("Enter your username : ");
+    socket.emit("game-chat", username);
+    
+    function sendMessageGame()
+    {
+        const msgElem = document.getElementById("inputMessageGame");
+        socket.emit("sendMessageGame", msgElem.value);
+        msgElem.value = '';
+    }
+</script>
+<script src="js/chat.js"></script>

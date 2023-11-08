@@ -30,3 +30,8 @@ export const game_room = (req: Request, res: Response) => {
         layout: 'index'
     })
 }
+export const game_war = (req: Request, res: Response) => {
+    res.render('war-area', {
+        layout: 'index'
+    })
+}

@@ -1,0 +1,48 @@
+.free-move-zone
+{
+    display: block;
+    position: absolute;
+    height: 100vb;
+    width: 60vw;
+    background-color: rgb(129, 95, 160);
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.enemy{
+    background-color: green;
+    width: 300px;
+    height: 200px;
+    margin: 0 auto;
+}
+.abilities{
+    width: 70%;
+    height: 200px;
+    background-color: brown;
+    position: absolute;
+    bottom: 0px;
+    left: 15%;
+}
+.first-cat{
+    background-color: blue;
+    width: 100px;
+    height: 200px;
+    bottom: 220px;
+    left: 45%;
+    position: absolute;
+}
+.second-cat{
+    background-color: blue;
+    width: 100px;
+    height: 200px;
+    bottom: 270px;
+    left: 15%;
+    position: absolute;
+}
+.third-cat{
+    background-color: blue;
+    width: 100px;
+    height: 200px;
+    bottom: 270px;
+    right: 15%;
+    position: absolute;
+}
