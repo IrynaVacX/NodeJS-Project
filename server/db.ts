@@ -14,7 +14,7 @@ const isUsersExist = async () => {
 const configureDB = async () => {
     if (await isUsersExist() !== 1) {
         await connection.query(`CREATE TABLE Users(
-            \`id\` BIGINT PRIMARY KEY DEFAULT(UUID_SHORT()),
+            \`id\` BIGINT UNSIGNED PRIMARY KEY DEFAULT(UUID_SHORT()),
             \`name\` VARCHAR(15) NOT NULL,
             \`password\` VARCHAR(15) NOT NULL,
             \`created\` DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP)
