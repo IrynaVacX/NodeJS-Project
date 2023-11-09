@@ -1,34 +1,34 @@
-document.querySelector('form').addEventListener('submit', function(event) {
+document.querySelector('form').addEventListener('submit', function (event) {
     event.preventDefault();
 
     let action = document.querySelector('input[name="action"]:checked').value;
-    let nickname = document.getElementById("nickname").value;
-    let pass = document.getElementById("pass").value;
+    let login = document.getElementById("nickname").value;
+    let password = document.getElementById("pass").value;
     let repass = document.getElementById("repass").value;
 
-    
+
     if (action === 'signup') {
-        if (!nickname || !pass || !repass) {
+        if (!login || !password /*||!repas */) {
             alert("All fields are required for Sign up!");
             return;
         }
-        if (pass !== repass) {
-            alert("Passwords do not match!");
-            return;
-        }
+        // Поле "Повторите пароль" куда-то исчезло
+        // if (password !== repass) {
+        //     alert("Passwords do not match!");
+        //     return;
+        // }
     } else if (action === 'signin') {
-        if (!nickname || !pass) {
+        if (!login || !password) {
             alert("Nickname and Password are required for Sign in!");
             return;
         }
     }
 
-    
-    sendDataToServer([ action, nickname, pass ]);
+
+    sendDataToServer({ login, password });
 });
 
-function sendDataToServer(data)
-{
+function sendDataToServer(data) {
     // let data = {
     //     action: action,
     //     nickname: nickname,
@@ -42,17 +42,40 @@ function sendDataToServer(data)
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Success!');
-        }
-        else {
-            alert('Error: ' + data.message);
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
-    });
+        .then(response => response.json())
+        .then(j => {
+            /*JSON DATA:
+            -fields: 
+            --status
+            --statusMessage
+            --data is object array({fieldName, errorMessage}) 
+            */
+            switch (j.status) {
+                case 400:
+                    console.log(j);
+                    // wrong request data
+                    // missing fields: login, password
+                    break;
+                case 403:
+                    console.log(j);
+                    if (Array.isArray(j.data)) {
+                        let errorMessages = j.data;
+                        // errorMessages[0].fieldName
+                        // errorMessages[0].errorMessage
+                    }
+                    break;
+                case 500:
+                    console.log(j);
+                    // j.statusMessage
+                    break;
+                case 201:
+                    console.log(j);
+                    //success
+                    break;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { FieldErrorMessageModel } from "../models/FieldErrorMessageModel";
+import { ResponseModel } from "../models/ResponseModel";
 import { connection } from "../db";
 
 const checkUserExistence = async (user: string) => {
@@ -13,7 +14,29 @@ const sendResponse = (res: Response, statusCode: number, data: string, contentTy
     res.send(data);
 }
 
-const validateFields = async (login: string, password: string) => {
+const validateAuthFields = (login: string, password: string) => {
+    let isValid = true;
+    let errorMessage: FieldErrorMessageModel[] = [];
+    if (login.trim().length === 0) {
+        isValid = false;
+        errorMessage.push({ fieldName: 'login', errorMessage: 'Login is empty' });
+    }
+    else if (login.length > 15) {
+        isValid = false;
+        errorMessage.push({ fieldName: 'login', errorMessage: 'Login max length: 15 symbols' });
+    }
+    if (password.trim().length === 0) {
+        isValid = false;
+        errorMessage.push({ fieldName: 'password', errorMessage: 'Password is empty' });
+    }
+    else if (password.length > 15) {
+        isValid = false;
+        errorMessage.push({ fieldName: 'password', errorMessage: 'Password max length: 15 symbols' });
+    }
+    return { errorList: errorMessage, isValid: isValid };
+}
+
+const validateRegFields = async (login: string, password: string) => {
     let isValid = true;
     let errorMessage: FieldErrorMessageModel[] = [];
     if (login.trim().length === 0) {
@@ -43,24 +66,25 @@ const validateFields = async (login: string, password: string) => {
 
 export const registerNewUser = async (req: Request, res: Response) => {
     const data = req.body;
-    let responseBody = {};
+    let responseBody: ResponseModel;
     let contentType = "application/json";
-    if (!data.login || !data.password) {
+    if (typeof data.login === 'undefined' || typeof data.password === 'undefined') {
         responseBody = {
             status: 400,
-            statusMessage: 'Missing required params: \'login\', \'password\''
+            statusMessage: 'Missing required params: \'login\', \'password\'',
+            data: undefined
         };
-        sendResponse(res, 400, JSON.stringify(responseBody), contentType);
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
         return;
     }
-    let validationResult = await validateFields(data.login, data.password);
+    let validationResult = await validateRegFields(data.login, data.password);
     if (!validationResult.isValid) {
         responseBody = {
             status: 403,
             statusMessage: 'Validation error',
             data: validationResult.errorList
         };
-        sendResponse(res, 400, JSON.stringify(responseBody), contentType);
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
         return;
     }
     try {
@@ -70,17 +94,74 @@ export const registerNewUser = async (req: Request, res: Response) => {
     catch (err) {
         responseBody = {
             status: 500,
-            statusMessage: 'Server error. Check server logs'
+            statusMessage: 'Server error. Check server logs',
+            data: undefined
         };
-        console.log("Database Insert Error: ", err);
-        sendResponse(res, 500, JSON.stringify(responseBody), contentType);
+        console.error("[ERR]registerNewUser: ", err);
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
         return;
     }
     responseBody = {
         status: 201,
-        statusMessage: 'Created'
+        statusMessage: 'Created',
+        data: undefined
     };
-    sendResponse(res, 201, JSON.stringify(responseBody), contentType);
+    sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+}
+
+export const authUser = async (req: Request, res: Response) => {
+    const data = req.body;
+    let responseBody: ResponseModel;
+    let contentType = "application/json";
+    if (typeof data.login === 'undefined' || typeof data.password === 'undefined') {
+        responseBody = {
+            status: 400,
+            statusMessage: 'Missing required params: \'login\', \'password\'',
+            data: undefined
+        };
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+        return;
+    }
+    let validationResult = validateAuthFields(data.login, data.password);
+    if (!validationResult.isValid) {
+        responseBody = {
+            status: 403,
+            statusMessage: 'Validation error',
+            data: validationResult.errorList
+        };
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+        return;
+    }
+    try {
+        let searchResult = await connection.query('SELECT COUNT(*) AS Users FROM Users AS u WHERE u.name = ? AND u.password = ?;',
+        [data.login,data.password]);
+        console.log(searchResult[0][0].Users);
+        if (searchResult[0][0].Users !== 1) {
+            responseBody = {
+                status: 401,
+                statusMessage: 'Wrong login or password',
+                data: undefined
+            };
+            sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+            return;
+        }
+    }
+    catch (err) {
+        responseBody = {
+            status: 500,
+            statusMessage: 'Server error. Check server logs',
+            data: undefined
+        };
+        console.error("[ERR]authUser: ", err);
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+        return;
+    }
+    responseBody = {
+        status: 201,
+        statusMessage: 'Ok',
+        data: undefined
+    };
+    sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
 }
 
 export const index = (req: Request, res: Response) => {
