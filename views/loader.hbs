@@ -1,21 +1,58 @@
-<div class="cat">
-  <div class="body"></div>
-  <div class="body-merge"></div>
-  <div class="ear-left"></div>
-  <div class="ear-right"></div>
-  <div class="eye eye__left"></div>
-  <div class="eye eye__right"></div>
-  <div class="mouth">
-    <div class="mouth-left"></div>
-    <div class="mouth-right"></div>
-  </div>
-  <div class="paw paw__left">
-    <div class="paw-detail-small paw-detail__top"></div>
-    <div class="paw-detail-small paw-detail__left"></div>
-    <div class="paw-detail-small paw-detail__right"></div>
-    <div class="paw-detail-large paw-detail__bottom"></div>
+<style>
+  .container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 196, 219);
+  }
+
+  .loader {
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+  }
+  .c-btn {
+    display: none;
+    min-width: 300px;
+  }
+  .c-btn button {
+    text-transform: uppercase;
+  }
+
+  @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+  @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+  @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
+</style>
+
+<div>
+  <div>
+    <div class="container">
+      <div id="loader-img" class="loader">
+        <img src="https://img.icons8.com/color/48/000000/pixel-cat.png"/>
+      </div>
+      <div id="c-btn" class="c-btn">
+        <button onclick="startGame()">Start Game</button>
+      </div>
+    </div>
   </div>
 </div>
-<div class="paw-right-down"></div>
-<div class="paw-merge-right"></div>
-<div class="desk"></div>
+
+<script>
+  const animatedDiv = document.getElementById('loader-img');
+  const btn = document.getElementById('c-btn');
+  const randTimeout = Math.random() * (4000 - 700) + 700;
+  setTimeout(() => {
+    animatedDiv.classList.remove('loader');
+    animatedDiv.style.display = 'none';
+    btn.style.display = 'block';
+    }, randTimeout);
+</script>
+{{!-- StartGame --}}
+<script>
+    function startGame()
+    {
+        window.location = window.location.pathname.split("/")[0] + "/registration";
+    }
+</script>

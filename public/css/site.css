@@ -18,7 +18,7 @@ html, body { margin: 0; }
 ::-ms-input-placeholder { color: #DEDFDF; }
 
 body {
-  background: #6ED0F6;
+  background-color: rgb(255, 196, 219);
   color: #fff;
   font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
