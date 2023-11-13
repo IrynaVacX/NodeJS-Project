@@ -1,10 +1,9 @@
-import   app          from "./server";
-import { connection } from "./db";
+import app from "./server";
 import { homeRouter } from "./routes/homeRouter";
-import   dotenv       from "dotenv";
+import dotenv from "dotenv";
 import { Server } from "socket.io";
+import { globalChatService } from "../services/GlobalChatService";
 
-let connect = connection;
 
 dotenv.config();
 
@@ -27,27 +26,30 @@ io.on("connection", (socket) => {
     // join to global game chat
     socket.on("menu-chat", async (username) => {
         socket.join("menu-chat");
-
-        await connect.query("SELECT name, message FROM GlobalChat")
-        .then(([rows]) => {
-            console.log(rows);
-            io.to("menu-chat").emit("global-chat-history", rows);
-        })
-        .catch((err) => {
+        try {
+            let rows = await globalChatService.getMessagesAsArray();
+            if (rows !== null) {
+                console.log(rows);
+                io.to("menu-chat").emit("global-chat-history", rows);
+            }
+        }
+        catch (err) {
             console.error("Error fetching chat history : ", err);
-        });
-        
+        };
+
         usernames[socket.id] = username;
-        await connect.query(`INSERT INTO GlobalChat(name, message) VALUES(?, ?)`, [ null, `${usernames[socket.id]} joined the chat` ])
-        .then(() => {
-            console.error("Successfully sending chat message");
-            io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} joined the chat`, type: "menu-chat" });
-        })
-        .catch((err) => {
+        try {
+            let addResult = await globalChatService.addNewMessage(null, `${usernames[socket.id]} joined the chat`);
+            if (addResult) {
+                console.error("Successfully sending chat message");
+                io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} joined the chat`, type: "menu-chat" });
+            }
+        }
+        catch (err) {
             console.error("Error sending chat message : ", err);
-        });
+        };
     });
- 
+
 
     // send messages to menu chat
     socket.on("sendMessageMenu", async (message) => {
@@ -58,25 +60,30 @@ io.on("connection", (socket) => {
         //         ORDER BY id ASC
         //         LIMIT 1)`
         //     );
-        await connect.query(`INSERT INTO GlobalChat(name, message) VALUES(?, ?)`, [ usernames[socket.id], message ])
-        .then(() => {
-            console.error("Successfully sending chat message");
-            io.to("menu-chat").emit("receiveMessage", { username: usernames[socket.id], message: message, type: "menu-chat" });
-        })
-        .catch((err) => {
+
+        try {
+            let addResult = await globalChatService.addNewMessage(usernames[socket.id], message);
+            if (addResult) {
+                console.error("Successfully sending chat message");
+                io.to("menu-chat").emit("receiveMessage", { username: usernames[socket.id], message: message, type: "menu-chat" });
+            }
+        }
+        catch (err) {
             console.error("Error sending chat message : ", err);
-        });
+        };
     });
     // disconnect from menu chat
     socket.on("disconnect", async () => {
-        await connect.query(`INSERT INTO GlobalChat(name, message) VALUES(?, ?)`, [ null, `${usernames[socket.id]} left the chat` ])
-        .then(() => {
-            console.error("Successfully sending chat message");
-            io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} left the chat`, type: "menu-chat" });
-        })
-        .catch((err) => {
+        try {
+            let addResult = await globalChatService.addNewMessage(null, `${usernames[socket.id]} left the chat`);
+            if (addResult) {
+                console.error("Successfully sending chat message");
+                io.to("menu-chat").emit("infoMessage", { message: `${usernames[socket.id]} left the chat`, type: "menu-chat" });
+            }
+        }
+        catch (err) {
             console.error("Error sending chat message : ", err);
-        });
+        };
         delete usernames[socket.id];
     });
 
@@ -96,5 +103,5 @@ io.on("connection", (socket) => {
         io.to("game-chat").emit("infoMessageGame", { message: `${usernames[socket.id]} left the chat`, type: "game-chat" });
         delete usernames[socket.id];
     });
-    
+
 });
