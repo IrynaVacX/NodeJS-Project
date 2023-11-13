@@ -134,3 +134,4 @@ test.sql
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+mydb.session.sql

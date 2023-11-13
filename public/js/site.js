@@ -125,7 +125,7 @@ function sendLoginRequest(data) {
                 break;
             case 201:
                 console.log(j);
-                //success
+                window.location.href = "/game-room";
                 break;
         }
     })
