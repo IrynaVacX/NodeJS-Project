@@ -5,7 +5,10 @@ import { connection } from "../db";
 
 const checkUserExistence = async (user: string) => {
     let result = await connection.query("SELECT COUNT(*) as Users FROM Users AS u WHERE u.name = ?", [user]);
-    return result[0][0].Users;
+    if(result[0][0].Users>=1){
+        return true;
+    }
+    return false;
 }
 
 const sendResponse = (res: Response, statusCode: number, data: string, contentType: string) => {
@@ -47,7 +50,8 @@ const validateRegFields = async (login: string, password: string) => {
         isValid = false;
         errorMessage.push({ fieldName: 'login', errorMessage: 'Login max length: 15 symbols' });
     }
-    else if (await checkUserExistence(login) > 1) {
+    let existResult=await checkUserExistence(login);
+    if(existResult) {
         isValid = false;
         errorMessage.push({ fieldName: 'login', errorMessage: 'User already exist' });
     }
@@ -133,10 +137,9 @@ export const authUser = async (req: Request, res: Response) => {
         return;
     }
     try {
-        let searchResult = await connection.query('SELECT COUNT(*) AS Users FROM Users AS u WHERE u.name = ? AND u.password = ?;',
+        let searchResult = await connection.query('SELECT * FROM Users AS u WHERE u.name = ? AND u.password = ?;',
         [data.login,data.password]);
-        console.log(searchResult[0][0].Users);
-        if (searchResult[0][0].Users !== 1) {
+        if(typeof searchResult[0][0]==='undefined'){
             responseBody = {
                 status: 401,
                 statusMessage: 'Wrong login or password',
