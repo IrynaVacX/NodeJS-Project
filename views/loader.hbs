@@ -1,53 +1,113 @@
 <style>
+  ::selection {
+    user-select: none;
+  }
+
   .container {
   display: flex;
   width: 100vw;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 196, 219);
+  background-image: linear-gradient(to right bottom, #eb52a9, #e560b9, #de6ec8, #d67ad5, #cd86e0, #c281dc, #b67dd7, #ab78d3, #9b62c0, #8b4cae, #7b369b, #6c1c89);
+  background-size: 300% 300%;
+  animation: gradient 15s ease-in-out forwards;
+  }
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    100% {
+      background-position: 80% 50%;
+    }
   }
 
   .loader {
-    -webkit-animation:spin 4s linear infinite;
-    -moz-animation:spin 4s linear infinite;
-    animation:spin 4s linear infinite;
+    transition: transform 0.5s ease-in-out;
+    animation: rotateAnimation 2.5s ease-in-out forwards;
   }
+  .fin-anim {
+    margin-left: 126px;
+    transition: transform 0.5s ease-in-out;
+    animation: moveUpAnimation 2.5s ease-in-out forwards;
+  }
+  @keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes moveUpAnimation {
+    0% {
+      transform: translateY(86%);
+    }
+    100% {
+      transform: translateY(-30%);
+    }
+  }
+
   .c-btn {
     display: none;
     min-width: 300px;
-  }
-  .c-btn button {
     text-transform: uppercase;
   }
-
-  @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-  @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-  @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
+  .fin-anim-btn {
+    display: block;
+    transition: transform 0.5s ease-in-out;
+    animation: finAnimationBtn 2.5s ease-in-out forwards;
+  }
+  @keyframes finAnimationBtn {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
 </style>
 
 <div>
   <div>
     <div class="container">
-      <div id="loader-img" class="loader">
-        <img src="https://img.icons8.com/color/48/000000/pixel-cat.png"/>
-      </div>
-      <div id="c-btn" class="c-btn">
-        <button onclick="startGame()">Start Game</button>
+      <div>
+        <img id="loader-img" class="loader" src="https://img.icons8.com/color/48/000000/pixel-cat.png"/>
+        <button id="c-btn" class="c-btn" onclick="startGame()">Start Game</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  const animatedDiv = document.getElementById('loader-img');
+  const img = document.getElementById('loader-img');
   const btn = document.getElementById('c-btn');
   const randTimeout = Math.random() * (4000 - 700) + 700;
+  let isAnimFin = false;
+
+  function onAnimFunc() {
+    img.classList.remove('loader');
+    if (isAnimFin) {
+      img.classList.add('fin-anim');
+      btn.classList.add('fin-anim-btn');
+      img.removeEventListener('animationend', onAnimFunc);
+    }
+    else {
+      void img.offsetWidth;
+      img.classList.add('loader');
+    }
+  };
+
+  img.addEventListener("animationend", onAnimFunc);
+
   setTimeout(() => {
-    animatedDiv.classList.remove('loader');
-    animatedDiv.style.display = 'none';
-    btn.style.display = 'block';
-    }, randTimeout);
+    isAnimFin = true;
+  }, randTimeout);
 </script>
 {{!-- StartGame --}}
 <script>
