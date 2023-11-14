@@ -5,8 +5,7 @@
   "main": "server/main.ts",
   "type": "module",
   "scripts": {
-    "start": "tsx watch .",
-    "db-test":"tsx watch db2.ts"
+    "start": "tsx watch --ignore ./DBlog.txt ."
   },
   "keywords": [],
   "author": "",
