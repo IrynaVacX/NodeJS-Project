@@ -32,7 +32,7 @@
   .fin-anim {
     margin-left: 126px;
     transition: transform 0.5s ease-in-out;
-    animation: moveUpAnimation 2.5s ease-in-out forwards;
+    animation: moveUpAnimation 2.2s ease-in-out forwards;
   }
   @keyframes rotateAnimation {
     0% {
@@ -59,7 +59,7 @@
   .fin-anim-btn {
     display: block;
     transition: transform 0.5s ease-in-out;
-    animation: finAnimationBtn 2.5s ease-in-out forwards;
+    animation: finAnimationBtn 2.2s ease-in-out forwards;
   }
   @keyframes finAnimationBtn {
     0% {
@@ -71,14 +71,26 @@
       transform: translateY(0%);
     }
   }
+
+  .startgame {
+    animation: startgameAnimation 1.2s ease-in-out forwards;
+  }
+  @keyframes startgameAnimation {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 </style>
 
-<div>
+<div id="loader-content">
   <div>
     <div class="container">
       <div>
         <img id="loader-img" class="loader" src="https://img.icons8.com/color/48/000000/pixel-cat.png"/>
-        <button id="c-btn" class="c-btn" onclick="startGame()">Start Game</button>
+        <button id="start-game-btn" class="c-btn" onclick="startGame()">Start Game</button>
       </div>
     </div>
   </div>
@@ -86,7 +98,7 @@
 
 <script>
   const img = document.getElementById('loader-img');
-  const btn = document.getElementById('c-btn');
+  const btn = document.getElementById('start-game-btn');
   const randTimeout = Math.random() * (4000 - 700) + 700;
   let isAnimFin = false;
 
@@ -111,8 +123,12 @@
 </script>
 {{!-- StartGame --}}
 <script>
-    function startGame()
-    {
-        window.location = window.location.pathname.split("/")[0] + "/registration";
-    }
+  function startGame()
+  {
+    const contentPage = document.getElementById('loader-content');
+    contentPage.classList.add('startgame');
+    contentPage.addEventListener("animationend", () => {
+      window.location = window.location.pathname.split("/")[0] + "/registration";
+    });
+  }
 </script>

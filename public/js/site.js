@@ -27,12 +27,6 @@ document.querySelector('form').addEventListener('submit', function (event) {
 });
 
 function sendRegistrationRequest(data) {
-    // let data = {
-    //     action: action,
-    //     nickname: nickname,
-    //     password: password
-    // };
-
     fetch('/registration', {
         method: 'POST',
         headers: {
@@ -125,7 +119,7 @@ function sendLoginRequest(data) {
                 break;
             case 201:
                 console.log(j);
-                window.location.href = "/game-room";
+                window.location.href = "/menu";
                 break;
         }
     })

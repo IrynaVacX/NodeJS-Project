@@ -42,7 +42,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
     const socket = io();
-    //const username = "Aswd";
     const username = prompt("Enter your username : ");
     socket.emit("menu-chat", username);
     
@@ -51,7 +50,6 @@
         const msgElem = document.getElementById("inputMessageMenu");
         socket.emit("sendMessageMenu", msgElem.value);
         msgElem.value = '';
-    
     }
 </script>
 <script src="js/chat.js"></script>
@@ -69,6 +67,12 @@
         document.getElementById("idMainMenuOptions").style.display = "none";
     }
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const elem = document.getElementById("isFullscreenOn");
+        elem.innerText = "OFF";
+        elem.style.color = "red";
+    });
+    
     function fullscreenTurnClick()
     {
         const elem = document.getElementById("isFullscreenOn");
