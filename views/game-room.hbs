@@ -21,16 +21,25 @@
 
 
 {{!-- connecting the Socket.io library directly from CDN --}}
-{{!-- (Content Delivery Network)  to work with game-chat --}}
+{{!-- (Content Delivery Network) to work with game-chat --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
     const socket = io();
     //const username = "Aswd";
-    const username = prompt("Enter your username : ");
-    socket.emit("game-chat", username);
-    
-    function sendMessageGame()
-    {
+
+    getUserName().then(username => {
+        socket.emit("game-chat", username);
+    })
+
+    async function getUserName() {
+        let result = await fetch('/profile', {
+            method: 'GET'
+        });
+        result = await result.json();
+        return result.data;
+    }
+
+    function sendMessageGame() {
         const msgElem = document.getElementById("inputMessageGame");
         socket.emit("sendMessageGame", msgElem.value);
         msgElem.value = '';

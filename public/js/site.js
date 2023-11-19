@@ -11,22 +11,23 @@ document.querySelector('form').addEventListener('submit', function (event) {
             alert("All fields are required for Sign up!");
             return;
         }
-        
+
         if (password !== repass) {
             alert("Passwords do not match!");
             return;
         }
-        sendRegistrationRequest({ login, password });
+        sendRegistrationRequest({ login: login, password: password });
     } else if (action === 'signin') {
         if (!login || !password) {
             alert("Nickname and Password are required for Sign in!");
             return;
         }
-        sendLoginRequest({ login, password });
+        sendLoginRequest({ login: login, password: password });
     }
 });
 
 function sendRegistrationRequest(data) {
+
     fetch('/registration', {
         method: 'POST',
         headers: {
@@ -52,14 +53,14 @@ function sendRegistrationRequest(data) {
                     break;
                 case 403:
                     console.log(j);
-                    
+
                     if (Array.isArray(j.data)) {
                         let errorMessages = j.data;
                         // errorMessages[0].fieldName
                         // errorMessages[0].errorMessage
-                       
+
                     }
-                  
+
                     break;
                 case 500:
                     console.log(j);
@@ -79,6 +80,7 @@ function sendRegistrationRequest(data) {
 
 function sendLoginRequest(data) {
     // Code to handle login request
+    console.log(data);
     fetch('/auth', {
         method: 'POST',
         headers: {
@@ -86,45 +88,51 @@ function sendLoginRequest(data) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(j => {
-        /*JSON DATA:
-        -fields: 
-        --status
-        --statusMessage
-        --data is object array({fieldName, errorMessage}) 
-        */
-        switch (j.status) {
-            case 400:
-                console.log(j);
-                // wrong request data
-                // missing fields: login, password
-                alert(j.body);
-
-                break;
-            case 403:
-                console.log(j);
-                
-                if (Array.isArray(j.data)) {
-                    let errorMessages = j.data;
-                    // errorMessages[0].fieldName
-                    // errorMessages[0].errorMessage
-                   
-                }
-              
-                break;
-            case 500:
-                console.log(j);
-                // j.statusMessage
-                break;
-            case 201:
-                console.log(j);
+        .then(response => {
+            if (response.status === 200) {
                 window.location.href = "/menu";
-                break;
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
-    });
+            } else {
+                return response.json();
+            }
+        })
+        .then(j => {
+            /*JSON DATA:
+            -fields: 
+            --status
+            --statusMessage
+            --data is object array({fieldName, errorMessage}) 
+            */
+            switch (j.status) {
+                case 400:
+                    console.log(j);
+                    // wrong request data
+                    // missing fields: login, password
+                    alert(j.statusMessage);
+
+                    break;
+                case 403:
+                    console.log(j);
+
+                    if (Array.isArray(j.data)) {
+                        let errorMessages = j.data;
+                        // errorMessages[0].fieldName
+                        // errorMessages[0].errorMessage
+
+                    }
+
+                    break;
+                case 500:
+                    console.log(j);
+                    // j.statusMessage
+                    break;
+                // case 201:
+                //     console.log(j);
+                //     window.location.href = "/menu";
+                //     break;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
 }
