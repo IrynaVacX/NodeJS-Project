@@ -84,6 +84,16 @@ export const registerNewUser = async (req: Request, res: Response) => {
     sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
 }
 export const authUser = async (req: Request, res: Response, next) => {
+    // @ts-ignore
+    if(req.session.user){
+        responseBody = {
+            status: 400,
+            statusMessage: 'Already authorized',
+            data: undefined
+        };
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+        return;
+    }
     const { login, password } = req.body;
     if (typeof login === 'undefined' || typeof password === 'undefined') {
         responseBody = {
@@ -200,6 +210,13 @@ export const menu = (req: Request, res: Response) => {
     })
 }
 export const register = (req: Request, res: Response) => {
+    // @ts-ignore
+    if (req.session.user) {
+        res.render('menu', {
+            layout: "index",
+        })
+        return;
+    }
     res.render('reg', {
         layout: 'index'
     })

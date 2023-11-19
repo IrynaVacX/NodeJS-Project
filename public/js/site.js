@@ -1,30 +1,35 @@
-document.querySelector('form').addEventListener('submit', function (event) {
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const regForm = document.querySelector('form');
+    if (regForm) {
+        regForm.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-    let action = document.querySelector('input[name="action"]:checked').value;
-    let login = document.getElementById("nickname").value;
-    let password = document.getElementById("pass").value;
-    let repass = document.getElementById("repass").value;
+            let action = document.querySelector('input[name="action"]:checked').value;
+            let login = document.getElementById("nickname").value;
+            let password = document.getElementById("pass").value;
+            let repass = document.getElementById("repass").value;
 
-    if (action === 'signup') {
-        if (!login || !password || !repass) {
-            alert("All fields are required for Sign up!");
-            return;
-        }
+            if (action === 'signup') {
+                if (!login || !password || !repass) {
+                    alert("All fields are required for Sign up!");
+                    return;
+                }
 
-        if (password !== repass) {
-            alert("Passwords do not match!");
-            return;
-        }
-        sendRegistrationRequest({ login: login, password: password });
-    } else if (action === 'signin') {
-        if (!login || !password) {
-            alert("Nickname and Password are required for Sign in!");
-            return;
-        }
-        sendLoginRequest({ login: login, password: password });
+                if (password !== repass) {
+                    alert("Passwords do not match!");
+                    return;
+                }
+                sendRegistrationRequest({ login: login, password: password });
+            } else if (action === 'signin') {
+                if (!login || !password) {
+                    alert("Nickname and Password are required for Sign in!");
+                    return;
+                }
+                sendLoginRequest({ login: login, password: password });
+            }
+        });
     }
-});
+})
 
 function sendRegistrationRequest(data) {
 
@@ -48,7 +53,7 @@ function sendRegistrationRequest(data) {
                     console.log(j);
                     // wrong request data
                     // missing fields: login, password
-                    alert(j.body);
+                    alert(j.statusMessage);
 
                     break;
                 case 403:
