@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     player.style.left = posX + 'px';
     
     const speed = 3;
-    const playerSize = 50;
-    const fieldWidth = 995;
-    const fieldHeight = 910;
+    const playerSize = 55;
+    const fieldWidth = 1495;
+    const fieldHeight = 920;
     let lastDirection = null;
 
     function setPlayerImage(direction) {

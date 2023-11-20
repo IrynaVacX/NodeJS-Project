@@ -9,7 +9,7 @@
 /********* MENU-CHAT *********/
 .chat-container
 {
-    z-index: 2;
+    z-index: 5;
     position: absolute;
     display: grid;
     left: 20px;

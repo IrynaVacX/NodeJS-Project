@@ -1,11 +1,13 @@
 
 #free-move-zone
 {
+    overflow: hidden;
     display: block;
     position: absolute;
     height: 920px;
-    width: 1000px;
-    background-color: rgb(129, 95, 160);
+    width: 1500px;
+    background-color: none;
+    /* background-color: rgba(129, 95, 160, 0.445); */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -19,9 +21,45 @@
     overflow: hidden;
 }
 #player {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     position: absolute;
     /* background-size: cover; */
     background-size: 100% 100%;
 }
+
+
+.game-zone
+{
+    z-index: 1;
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.gz-bg-main
+{
+    z-index: 0;
+    /* background-color: rgb(129, 95, 160); */
+    background-image: url("../assets/Game/game-bg-main.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+.gz-bg-0
+{
+    z-index: 2;
+    opacity: 0.3;
+    background-image: url("../assets/Game/game-zone-bg-0.png");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+.gz-bg-1
+{
+    z-index: 3;
+    background-image: url("../assets/Game/game-zone-bg-1.png");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
