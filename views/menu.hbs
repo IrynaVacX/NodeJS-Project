@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="css/menu-styles.css">
 <link rel="stylesheet" href="css/chat-styles.css">
 
-
 <div>
     <div class="menu-container">
         <div class="menu-center-name">
@@ -15,15 +14,20 @@
         </div>
 
         <div id="idMainMenuOptions" class="menu-center-options">
-            <span>OPTIONS</span>
+            <span>Options</span>
             <button>Sound <i id="isSoundOn">ON</i></button>
             <button onclick="fullscreenTurnClick()">Fullscreen <i id="isFullscreenOn">OFF</i></button>
-            <button>Chat History</button>
+            <button onclick="openChatHistoryClick()">Chat History</button>
             <button onclick="closeOptionsClick()">Back</button>
         </div>
+
+        <div id="idMainMenuChat" class="menu-center-options">
+            <span>Chat History</span>
+            <button onclick="fullscreenTurnClick()">Fullscreen <i>OFF</i></button>
+            <button>Chat History</button>
+            <button onclick="closeChatHistoryClick()">Back</button>
+        </div>
     </div>
-
-
 
     <div class="chat-container">
         <div id="chatContainerMenu">
@@ -35,7 +39,6 @@
         </div>
     </div>
 </div>
-
 
 {{!-- connecting the Socket.io library directly from CDN --}}
 {{!-- (Content Delivery Network)  to work with game-chat --}}
@@ -73,21 +76,29 @@
         elem.style.color = "red";
     });
     
-    function fullscreenTurnClick()
-    {
+    function fullscreenTurnClick() {
         const elem = document.getElementById("isFullscreenOn");
-        if (document.fullscreenElement)
-        {
+        if (document.fullscreenElement) {
             elem.innerText = "OFF";
             elem.style.color = "red";
             document.exitFullscreen();
         }
-        else
-        {
+        else {
             elem.innerText = "ON";
             elem.style.color = "green";
             document.documentElement.requestFullscreen();
         }
+    }
+
+    function openChatHistoryClick() {
+        document.getElementById("idMainMenuOptions").style.display = "none";
+        document.getElementById("idMainMenuChat").style.display = "grid";
+
+    }
+    function closeChatHistoryClick()
+    {
+        document.getElementById("idMainMenuOptions").style.display = "grid";
+        document.getElementById("idMainMenuChat").style.display = "none";
     }
 
 </script>

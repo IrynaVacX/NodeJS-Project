@@ -81,6 +81,7 @@
     padding: 15px;
     margin: auto;
     margin-top: 313px;
+    width: 210px;
     text-align: center;
     background-color: #0000007a;
     border-radius: 15px;
@@ -88,6 +89,7 @@
 }
 .menu-center-options span
 {
+    text-transform: uppercase;
     margin-bottom: 15px;
     font-weight: bold;
 }

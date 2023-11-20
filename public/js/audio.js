@@ -1,7 +1,7 @@
 // AUDIO OF BUTTONS //
 const buttonClickAudio = new Audio('assets/Audios/button-mouse_down.mp3');
 buttonClickAudio.loop = false;
-buttonClickAudio.volume = 0.2;
+buttonClickAudio.volume = 0.1;
 
 const buttonHoverAudio = new Audio('assets/Audios/button-mouse_over.mp3');
 buttonHoverAudio.loop = false;
