@@ -125,3 +125,11 @@
     visibility: visible;
     right: 0;
   }
+
+.first_slill{
+  background-color: blue;
+  position: absolute;
+  height: 90%;
+  width: calc(30% - 20px);
+  margin-top: 10px;
+}
