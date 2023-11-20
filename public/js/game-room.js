@@ -28,31 +28,53 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(movementTimer);
         movementTimer = setTimeout(() => {
             setPlayerImage(lastDirection || 'idle'); // Установка изображения покоя если направление неизвестно
+            isAnimationPlaying = false;
         }, 500); // Время в мс, после которого игрок переходит в состояние покоя
     }
-
+    let isAnimationPlaying = false;
     document.addEventListener('keydown', (e) => {
+        
         clearTimeout(movementTimer); // Остановка таймера при любом нажатии клавиши
         switch (e.key) {
             case 'ArrowLeft': // влево
                 posX = Math.max(0, posX - speed);
                 lastDirection = 'left';
-                player.src = "assets/cat/left.gif"; // Предполагается, что это гифка движения влево
+                if (!isAnimationPlaying) {
+                    isAnimationPlaying = true;
+                    player.style.display = 'block'; // Показать GIF
+                    player.src = ''; // Сбросить источник GIF, чтобы перезапустить анимацию
+                    player.src = "assets/cat/left.gif"; // Предполагается, что это гифка движения влево
+                }            
                 break;
             case 'ArrowRight': // вправо
                 posX = Math.min(fieldWidth - playerSize, posX + speed);
                 lastDirection = 'right';
+                if (!isAnimationPlaying) {
+                    isAnimationPlaying = true;
+                player.style.display = 'block'; // Показать GIF
+                player.src = ''; // Сбросить источник GIF, чтобы перезапустить анимаци
                 player.src = "assets/cat/right.gif";
+                }
                 break;
             case 'ArrowUp': // вверх
                 posY = Math.max(0, posY - speed);
                 lastDirection = 'up';
+                if (!isAnimationPlaying) {
+                    isAnimationPlaying = true;
+                player.style.display = 'block'; // Показать GIF
+                player.src = ''; // Сбросить источник GIF, чтобы перезапустить анимаци
                 player.src = "assets/cat/up.gif";
+                }
                 break;
             case 'ArrowDown': // вниз
                 posY = Math.min(fieldHeight - playerSize, posY + speed);
                 lastDirection = 'down';
+                if (!isAnimationPlaying) {
+                    isAnimationPlaying = true;
+                player.style.display = 'block'; // Показать GIF
+                player.src = ''; // Сбросить источник GIF, чтобы перезапустить анимаци
                 player.src = "assets/cat/down.gif";
+                }
                 break;
         }
         movePlayer();
