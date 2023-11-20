@@ -13,7 +13,7 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-homeRouter.get('/', isAuthenticated, index);
+homeRouter.get('/', index);
 homeRouter.get('/loader', loader);
 homeRouter.get('/registration', register);
 homeRouter.get('/menu', isAuthenticated, menu);

@@ -9,7 +9,7 @@
         </div>
         <div id="idMainMenuNavBtn" class="menu-center-navigation">
             <button id="btnNewGame" onclick="startPlay()">New Game</button>
-            <button id="btnOptions" onclick="openOptionsClick()">Options</button>
+            <button id="btnOptions" onclick="openCloseOptions()">Options</button>
             <button id="btnExit">Exit</button>
         </div>
 
@@ -17,15 +17,15 @@
             <span>Options</span>
             <button>Sound <i id="isSoundOn">ON</i></button>
             <button onclick="fullscreenTurnClick()">Fullscreen <i id="isFullscreenOn">OFF</i></button>
-            <button onclick="openChatHistoryClick()">Chat History</button>
-            <button onclick="closeOptionsClick()">Back</button>
+            <button onclick="openCloseChatHistory()">Chat History</button>
+            <button onclick="openCloseOptions()">Back</button>
         </div>
 
         <div id="idMainMenuChat" class="menu-center-options">
             <span>Chat History</span>
             <button onclick="fullscreenTurnClick()">Fullscreen <i>OFF</i></button>
             <button>Chat History</button>
-            <button onclick="closeChatHistoryClick()">Back</button>
+            <button onclick="openCloseChatHistory()">Back</button>
         </div>
     </div>
 
@@ -50,8 +50,6 @@
         socket.emit("menu-chat", username);
     })
 
-
-
     function sendMessageMenu() {
         const msgElem = document.getElementById("inputMessageMenu");
         socket.emit("sendMessageMenu", msgElem.value);
@@ -71,13 +69,39 @@
 
 {{!-- SCRIPT FOR OPTIONS --}}
 <script>
-    function openOptionsClick() {
-        document.getElementById("idMainMenuNavBtn").style.display = "none";
-        document.getElementById("idMainMenuOptions").style.display = "grid";
+    function openCloseOptions() {
+        const MenuOptions = document.getElementById("idMainMenuOptions");
+        const MenuNav = document.getElementById("idMainMenuNavBtn");
+        if (MenuNav.style.display !== 'none') {
+            MenuNav.style.display = 'none';
+            MenuOptions.style.display = 'grid';
+        }
+        else {
+            MenuNav.style.display = 'grid';
+            MenuOptions.style.display = 'none';
+        }
     }
-    function closeOptionsClick() {
-        document.getElementById("idMainMenuNavBtn").style.display = "grid";
-        document.getElementById("idMainMenuOptions").style.display = "none";
+    function openCloseChatHistory() {
+        const MenuOptions = document.getElementById("idMainMenuOptions");
+        const MenuChat = document.getElementById("idMainMenuChat");
+        if (MenuOptions.style.display !== 'none') {
+            MenuOptions.style.display = 'none';
+            MenuChat.style.display = 'grid';
+        }
+        else {
+            MenuOptions.style.display = 'grid';
+            MenuChat.style.display = 'none';
+        }
+    }
+
+    async function exitFromGame() {
+        fetch('/logout', {
+            method: 'GET'
+        }).then(r => {
+            if (r.status === 200) {
+                window.location.href = "/registration";
+            }
+        })
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -90,17 +114,6 @@
         }
     });
     
-    async function exitFromGame() {
-        fetch('/logout', {
-            method: 'GET'
-        }).then(r => {
-            if (r.status === 200) {
-                window.location.href = "/registration";
-            }
-        })
-    }
-
-
     function fullscreenTurnClick() {
         const elem = document.getElementById("isFullscreenOn");
         if (document.fullscreenElement) {
@@ -113,17 +126,6 @@
             elem.style.color = "green";
             document.documentElement.requestFullscreen();
         }
-    }
-
-    function openChatHistoryClick() {
-        document.getElementById("idMainMenuOptions").style.display = "none";
-        document.getElementById("idMainMenuChat").style.display = "grid";
-
-    }
-    function closeChatHistoryClick()
-    {
-        document.getElementById("idMainMenuOptions").style.display = "grid";
-        document.getElementById("idMainMenuChat").style.display = "none";
     }
 
 </script>

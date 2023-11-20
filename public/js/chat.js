@@ -45,5 +45,4 @@ socket.on("global-chat-history", (data) => {
         document.getElementById("chatContainerMenu").appendChild(msgElem);
         msgElem.scrollIntoView({ block: "center", behavior: "smooth" });
     }
-    // console.log("Successfull load chat history");
 });

@@ -195,9 +195,7 @@ export const getUsername = (req: Request, res: Response) => {
     sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
 }
 export const index = (req: Request, res: Response) => {
-    res.render('main', {
-        layout: 'index'
-    })
+    res.redirect('/loader');
 }
 export const loader = (req: Request, res: Response) => {
     res.render('loader', {

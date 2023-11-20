@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import { Server } from "socket.io";
 import { globalChatService } from "../services/GlobalChatService";
 
-
 dotenv.config();
 
 app.use('/', homeRouter);
@@ -46,8 +45,6 @@ io.on("connection", (socket) => {
             console.error("Error sending chat message : ", err);
         };
     });
-
-
     // send messages to menu chat
     socket.on("sendMessageMenu", async (message) => {
         try {
