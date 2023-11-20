@@ -53,7 +53,7 @@ function sendRegistrationRequest(data) {
                     console.log(j);
                     // wrong request data
                     // missing fields: login, password
-                    alert(j.statusMessage);
+                    //alert(j.statusMessage);
 
                     break;
                 case 403:
@@ -112,7 +112,7 @@ function sendLoginRequest(data) {
                     console.log(j);
                     // wrong request data
                     // missing fields: login, password
-                    alert(j.statusMessage);
+                    
 
                     break;
                 case 403:
