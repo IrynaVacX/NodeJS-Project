@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons_arr = document.querySelectorAll('button');
     buttons_arr.forEach((button_element) => {
         button_element.addEventListener('mousedown', () => {
-            if(!buttonClickAudio.ended) { buttonClickAudio.currentTime = 0; }
+            if(!buttonClickAudio.ended) { buttonClickAudio.ended = true; }
             buttonClickAudio.play();
         });
         button_element.addEventListener('mouseover', () => {
-            if(!buttonHoverAudio.ended) { buttonHoverAudio.currentTime = 0; }
+            if(!buttonHoverAudio.ended) { buttonHoverAudio.ended = true; }
             buttonHoverAudio.play();
         });
     });

@@ -85,15 +85,71 @@
     text-align: center;
     background-color: #0000007a;
     border-radius: 15px;
-    font-size: 27px;
 }
 .menu-center-options span
 {
     text-transform: uppercase;
     margin-bottom: 15px;
+    font-size: 27px;
     font-weight: bold;
 }
-.menu-center-options button i
+.menu-center-options button
 {
-    font-style: normal;
+    font-size: 24px;
+}
+
+/******* OPTIONS CHAT *******/
+#range-value {
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: 15px;
+}
+#idMainMenuChat input[type="range"]
+{
+    appearance: none;
+    opacity: 0.8;
+    height: 6px;
+    width: 150px;
+    outline: none;
+    border-radius: 100px;
+    background: #5c3052;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+#idMainMenuChat input[type="range"]:hover {
+    opacity: 1;
+}
+#idMainMenuChat input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    background: #964c86;
+}
+
+#turn-sound, #turn-fullscreen, #turn-chat-history {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 64px;
+    margin: 0;
+    margin-left: 10px;
+    padding-left: 33px;
+    border-radius: 16px;
+    background: radial-gradient(circle 12px, #964c86 100%, transparent calc(100% + 1px)) #5c3052 -16px;
+    transition: 0.3s ease-in-out;
+} 
+#idMainMenuChat input[type="checkbox"]::before, #idMainMenuOptions input[type="checkbox"]::before {
+    content: "Off";
+    font: bold 12px/32px Verdana;
+    color: rgb(206, 206, 206);
+    text-shadow: 0 1px black;
+}
+#idMainMenuChat input[type="checkbox"]:checked::before , #idMainMenuOptions input[type="checkbox"]:checked::before {
+    color: rgb(195, 240, 223);
+    content: "On";
+}
+#idMainMenuChat input[type="checkbox"]:checked, #idMainMenuOptions input[type="checkbox"]:checked {
+    padding-left: 8px;
+    background: radial-gradient(circle 12px, #15cf72 100%, transparent calc(100% + 1px)) #178552 -16px;
+    background-position: 16px;
 }

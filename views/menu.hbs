@@ -15,16 +15,16 @@
 
         <div id="idMainMenuOptions" class="menu-center-options">
             <span>Options</span>
-            <button>Sound <i id="isSoundOn">ON</i></button>
-            <button onclick="fullscreenTurnClick()">Fullscreen <i id="isFullscreenOn">OFF</i></button>
+            <button onclick="soundTurnClick()">Sound<input type="checkbox" id="turn-sound" onclick="soundTurnClick()"/></button>
+            <button onclick="fullscreenTurnClick()">Fullscreen<input type="checkbox" id="turn-fullscreen" onclick="fullscreenTurnClick()"/></button>
             <button onclick="openCloseChatHistory()">Chat History</button>
             <button onclick="openCloseOptions()">Back</button>
         </div>
 
         <div id="idMainMenuChat" class="menu-center-options">
             <span>Chat History</span>
-            <button onclick="fullscreenTurnClick()">Fullscreen <i>OFF</i></button>
-            <button>Chat History</button>
+            <button onclick="chatHistoryTurnClick()">History<input type="checkbox" id="turn-chat-history" onclick="chatHistoryTurnClick()"/></button>
+            <button id="btnSet-CH">How many msg <b id="range-value">13</b><input id="inptSet-CH" type="range" min="1" max="999" value="13" oninput="chatHistorySetUpdate(this.value)"></input></button>
             <button onclick="openCloseChatHistory()">Back</button>
         </div>
     </div>
@@ -69,6 +69,7 @@
 
 {{!-- SCRIPT FOR OPTIONS --}}
 <script>
+    
     function openCloseOptions() {
         const MenuOptions = document.getElementById("idMainMenuOptions");
         const MenuNav = document.getElementById("idMainMenuNavBtn");
@@ -77,6 +78,9 @@
             MenuOptions.style.display = 'grid';
         }
         else {
+            // here need to save sound and screen changes
+
+
             MenuNav.style.display = 'grid';
             MenuOptions.style.display = 'none';
         }
@@ -89,6 +93,9 @@
             MenuChat.style.display = 'grid';
         }
         else {
+            // here need to save all 'MenuChat' changes
+
+
             MenuOptions.style.display = 'grid';
             MenuChat.style.display = 'none';
         }
@@ -105,27 +112,56 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        const elem = document.getElementById("isFullscreenOn");
-        elem.innerText = "OFF";
-        elem.style.color = "red";
+        
+        // here need to set user-options
+
         const exitButton = document.getElementById("btnExit");
         if (exitButton) {
             exitButton.addEventListener('click', exitFromGame);
         }
     });
     
+    function soundTurnClick() {
+        const inpt = document.getElementById("turn-sound");
+        inpt.checked = !inpt.checked;
+    }
     function fullscreenTurnClick() {
-        const elem = document.getElementById("isFullscreenOn");
-        if (document.fullscreenElement) {
-            elem.innerText = "OFF";
-            elem.style.color = "red";
+        const inpt = document.getElementById("turn-fullscreen");
+        if(inpt.checked) {
             document.exitFullscreen();
         }
         else {
-            elem.innerText = "ON";
-            elem.style.color = "green";
             document.documentElement.requestFullscreen();
         }
+        inpt.checked = !inpt.checked;
+    }
+    function chatHistoryTurnClick() {
+        const inpt = document.getElementById("turn-chat-history");
+        if(inpt.checked) {
+            // if inpt.checked == true => need turn-off chat history (show only n [1 - 999] msg)
+
+            const button = document.getElementById("btnSet-CH");
+            const range = document.getElementById("range-value");
+            const input = document.getElementById("inptSet-CH");
+            button.disabled = false;
+            range.disabled = false;
+            input.disabled = false;
+            button.style.backgroundColor = '#9d11a1';
+        }
+        else {
+            const button = document.getElementById("btnSet-CH");
+            const range = document.getElementById("range-value");
+            const input = document.getElementById("inptSet-CH");
+            button.disabled = true;
+            range.disabled = true;
+            input.disabled = true;
+            button.style.backgroundColor = '#733f75';
+        }
+        inpt.checked = !inpt.checked;
+    }
+    function chatHistorySetUpdate(value) {
+        document.getElementById("range-value").innerText = value;
+        // place of changing the number of messages shown
     }
 
 </script>
