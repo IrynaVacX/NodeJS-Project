@@ -1,13 +1,16 @@
 
 #free-move-zone
 {
+    overflow: hidden;
     display: block;
     position: absolute;
-    height: 100vb;
-    width: 60vw;
-    background-color: rgb(129, 95, 160);
+    height: 920px;
+    width: 1500px;
+    background-color: none;
+    /* background-color: rgba(129, 95, 160, 0.445); */
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -50%);
 
 }
 #gameField {
@@ -18,7 +21,161 @@
     overflow: hidden;
 }
 #player {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     position: absolute;
+    /* background-size: cover; */
+    background-size: 100% 100%;
+}
+
+.game-zone
+{
+    z-index: 1;
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.gz-bg-main
+{
+    z-index: 0;
+    /* background-color: rgb(129, 95, 160); */
+    background-image: url("../assets/Game/game-bg-main.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+.gz-bg-0
+{
+    z-index: 2;
+    opacity: 0.3;
+    background-image: url("../assets/Game/game-zone-bg-0.png");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+.gz-bg-1
+{
+    z-index: 3;
+    background-image: url("../assets/Game/game-zone-bg-1.png");
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+
+#menu__toggle {
+    opacity: 0;
+  }
+  /* стилизуем кнопку */
+  .menu__btn {
+    display: flex; /* используем flex для центрирования содержимого */
+    align-items: center;  /* центрируем содержимое кнопки */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  /* добавляем "гамбургер" */
+  .menu__btn > span,
+  .menu__btn > span::before,
+  .menu__btn > span::after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #616161;
+  }
+  .menu__btn > span::before {
+    content: '';
+    top: -8px;
+  }
+  .menu__btn > span::after {
+    content: '';
+    top: 8px;
+  }
+  /* контейнер меню */
+.menu__box {
+    display: block;
+    position: fixed;
+    visibility: hidden;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100px;
+    margin: 0;
+    padding: 80px 0;
+    list-style: none;
+    text-align: center;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);
+
+  }
+  /* элементы меню */
+  .menu__item {
+    display: block;
+    padding: 5px 12px;
+    color: #fff; 
+    font-size: 27px; 
+    font-family: 'Raleway', sans-serif; 
+    border: none; 
+    border-radius: 8px; 
+    background: var(--btn-bg-color); 
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+    
+  }
+
+  #menu__toggle:checked ~ .menu__btn > span {
+    transform: rotate(45deg);
+  }
+  #menu__toggle:checked ~ .menu__btn > span::before {
+    top: 0;
+    transform: rotate(0);
+  }
+  #menu__toggle:checked ~ .menu__btn > span::after {
+    top: 0;
+    transform: rotate(90deg);
+  }
+  #menu__toggle:checked ~ .menu__box {
+    visibility: visible;
+    right: 0;
+  }
+button{
+    height: 50px;
+      
+}
+#buttons{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#turn-sound, #turn-fullscreen{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 64px;
+    margin: 0;
+    margin-left: 10px;
+    padding-left: 33px;
+    border-radius: 16px;
+    background: radial-gradient(circle 12px, #964c86 100%, transparent calc(100% + 1px)) #5c3052 -16px;
+    transition: 0.3s ease-in-out;
+} 
+#buttons input[type="checkbox"]::before, #idMainMenuOptions input[type="checkbox"]::before {
+    content: "Off";
+    font: bold 12px/32px Verdana;
+    color: rgb(206, 206, 206);
+    text-shadow: 0 1px black;
+}
+#buttons input[type="checkbox"]:checked::before , #idMainMenuOptions input[type="checkbox"]:checked::before {
+    color: rgb(195, 240, 223);
+    content: "On";
+}
+#buttons input[type="checkbox"]:checked, #idMainMenuOptions input[type="checkbox"]:checked {
+    padding-left: 8px;
+    background: radial-gradient(circle 12px, #15cf72 100%, transparent calc(100% + 1px)) #178552 -16px;
+    background-position: 16px;
 }
