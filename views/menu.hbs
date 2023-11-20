@@ -10,7 +10,7 @@
         <div id="idMainMenuNavBtn" class="menu-center-navigation">
             <button id="btnNewGame" onclick="startPlay()">New Game</button>
             <button id="btnOptions" onclick="openOptionsClick()">Options</button>
-            <button id="btnExit" onclick="#0">Exit</button>
+            <button id="btnExit">Exit</button>
         </div>
 
         <div id="idMainMenuOptions" class="menu-center-options">
@@ -41,31 +41,41 @@
 </div>
 
 {{!-- connecting the Socket.io library directly from CDN --}}
-{{!-- (Content Delivery Network)  to work with game-chat --}}
+{{!-- (Content Delivery Network) to work with game-chat --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
     const socket = io();
-    const username = prompt("Enter your username : ");
-    socket.emit("menu-chat", username);
-    
-    function sendMessageMenu()
-    {
+
+    getUserName().then(username => {
+        socket.emit("menu-chat", username);
+    })
+
+
+
+    function sendMessageMenu() {
         const msgElem = document.getElementById("inputMessageMenu");
         socket.emit("sendMessageMenu", msgElem.value);
         msgElem.value = '';
     }
+
+    async function getUserName() {
+        let result = await fetch('/profile', {
+            method: 'GET'
+        });
+        result = await result.json();
+        return result.data;
+    }
+
 </script>
 <script src="js/chat.js"></script>
 
 {{!-- SCRIPT FOR OPTIONS --}}
 <script>
-    function openOptionsClick()
-    {
+    function openOptionsClick() {
         document.getElementById("idMainMenuNavBtn").style.display = "none";
         document.getElementById("idMainMenuOptions").style.display = "grid";
     }
-    function closeOptionsClick()
-    {
+    function closeOptionsClick() {
         document.getElementById("idMainMenuNavBtn").style.display = "grid";
         document.getElementById("idMainMenuOptions").style.display = "none";
     }
@@ -74,8 +84,23 @@
         const elem = document.getElementById("isFullscreenOn");
         elem.innerText = "OFF";
         elem.style.color = "red";
+        const exitButton = document.getElementById("btnExit");
+        if (exitButton) {
+            exitButton.addEventListener('click', exitFromGame);
+        }
     });
     
+    async function exitFromGame() {
+        fetch('/logout', {
+            method: 'GET'
+        }).then(r => {
+            if (r.status === 200) {
+                window.location.href = "/registration";
+            }
+        })
+    }
+
+
     function fullscreenTurnClick() {
         const elem = document.getElementById("isFullscreenOn");
         if (document.fullscreenElement) {
@@ -104,8 +129,7 @@
 </script>
 {{!-- SCRIPT FOR STARTPLAY --}}
 <script>
-    function startPlay()
-    {
+    function startPlay() {
         window.location = window.location.pathname.split("/")[0] + "/game-room";
     }
 </script>
