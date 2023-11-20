@@ -80,3 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     moveSquare();
 });
+
+function addRandomElement() {
+    const field = document.getElementById('free-move-zone');
+    const element = document.createElement('div');
+    element.className = 'element';
+
+    // Случайная позиция в пределах поля
+    const x = Math.random() * (920 - 50);
+    const y = Math.random() * (1495 - 50);
+
+    element.style.left = x + 'px';
+    element.style.top = y + 'px';
+
+    field.appendChild(element);
+}
+
+// Автоматически добавлять элемент каждые 1000 миллисекунд (1 секунда)
+setInterval(addRandomElement, 1000);
