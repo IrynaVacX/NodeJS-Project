@@ -7,25 +7,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerSize = 50; // Измените это значение, если измените размер игрока в CSS
     const fieldWidth = gameField.clientWidth;
     const fieldHeight = gameField.clientHeight;
+    let lastDirection = null;
+    let movementTimer; // Таймер для отслеживания движения
+
+    function setPlayerImage(direction) {
+        const baseSrc = "assets/cats_stay/";
+        const directionSrc = {
+            'left': "left.png", // Предполагается, что это гифка из второй колонки
+            'right': "right.png",
+            'up': "up.png",
+            'down': "down.png",
+            
+        };
+        player.src = baseSrc + directionSrc[direction];
+    }
 
     function movePlayer() {
         player.style.left = posX + 'px';
         player.style.top = posY + 'px';
+        clearTimeout(movementTimer);
+        movementTimer = setTimeout(() => {
+            setPlayerImage(lastDirection || 'idle'); // Установка изображения покоя если направление неизвестно
+        }, 500); // Время в мс, после которого игрок переходит в состояние покоя
     }
 
     document.addEventListener('keydown', (e) => {
+        clearTimeout(movementTimer); // Остановка таймера при любом нажатии клавиши
         switch (e.key) {
             case 'ArrowLeft': // влево
                 posX = Math.max(0, posX - speed);
+                lastDirection = 'left';
+                player.src = "assets/cat/left.gif"; // Предполагается, что это гифка движения влево
                 break;
             case 'ArrowRight': // вправо
                 posX = Math.min(fieldWidth - playerSize, posX + speed);
+                lastDirection = 'right';
+                player.src = "assets/cat/right.gif";
                 break;
             case 'ArrowUp': // вверх
                 posY = Math.max(0, posY - speed);
+                lastDirection = 'up';
+                player.src = "assets/cat/up.gif";
                 break;
             case 'ArrowDown': // вниз
                 posY = Math.min(fieldHeight - playerSize, posY + speed);
+                lastDirection = 'down';
+                player.src = "assets/cat/down.gif";
                 break;
         }
         movePlayer();
