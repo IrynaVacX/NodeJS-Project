@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import { GlobalChat } from "../server/models/entities/GlobalChat";
+import { sequelize } from "../server/db2";
 
 class GlobalChatService {
 
@@ -24,6 +25,30 @@ class GlobalChatService {
             return false;
         }
         return true;
+    }
+
+    getMessagesAsArrayLimit = async (limit: number) => {
+        try {
+            const messages = await GlobalChat.findAll({
+                order: sequelize.literal('id DESC'),
+                limit: limit
+            });
+            if (messages.length !== 0) {
+                let result: { id: number, name: string, message: string, createdAt: Date }[] = [];
+                messages.forEach((el) => {
+                    result.push({
+                        id: el.id,
+                        name: el.name,
+                        message: el.message,
+                        createdAt: el.createdAt
+                    })
+                })
+                return result.reverse();
+            }
+        }
+        catch (error) {
+            console.log(`GlobalChatService(getMessages): ${error}`);
+        }
     }
 
     getMessagesAsArray = async () => {
