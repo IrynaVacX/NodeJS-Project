@@ -18,10 +18,6 @@ UserSettings.init({
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: 'User',
-            key: 'id'
-        }
     },
     sound: {
         type: DataTypes.BOOLEAN,

@@ -3,6 +3,8 @@ import { homeRouter } from "./routes/homeRouter";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 import { globalChatService } from "../services/GlobalChatService";
+import { userService } from "../services/UserService";
+import { settingsService } from "../services/UserSettingsService";
 
 dotenv.config();
 
@@ -25,15 +27,24 @@ io.on("connection", (socket) => {
     // join to global game chat
     socket.on("menu-chat", async (username) => {
         socket.join("menu-chat");
-        try {
-            let rows = await globalChatService.getMessagesAsArray();
-            if (rows !== null) {
-                io.to("menu-chat").emit("global-chat-history", rows);
+        const user = await userService.getUserByNickname(username);
+        if (user !== null) {
+            let settings = await settingsService.getSettingsByUserId(user.id);
+            if (settings !== null) {
+                if (!settings.history) {
+                    try {
+                        let rows = await globalChatService.getMessagesAsArrayLimit(settings.historyLength);
+                        if (rows !== null) {
+                            io.to("menu-chat").emit("global-chat-history", rows);
+                        }
+                    }
+                    catch (err) {
+                        console.error("Error fetching chat history : ", err);
+                    };
+                }
             }
         }
-        catch (err) {
-            console.error("Error fetching chat history : ", err);
-        };
+
         usernames[socket.id] = username;
         try {
             let addResult = await globalChatService.addNewMessage(null, `${usernames[socket.id]} joined the chat`);

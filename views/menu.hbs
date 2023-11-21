@@ -15,16 +15,22 @@
 
         <div id="idMainMenuOptions" class="menu-center-options">
             <span>Options</span>
-            <button onclick="soundTurnClick()">Sound<input type="checkbox" id="turn-sound" onclick="soundTurnClick()"/></button>
-            <button onclick="fullscreenTurnClick()">Fullscreen<input type="checkbox" id="turn-fullscreen" onclick="fullscreenTurnClick()"/></button>
+            <button onclick="soundTurnClick()">Sound<input type="checkbox" id="turn-sound"
+                    onclick="soundTurnClick()" /></button>
+            <button onclick="fullscreenTurnClick()">Fullscreen<input type="checkbox" id="turn-fullscreen"
+                    onclick="fullscreenTurnClick()" /></button>
+            <button onclick="acceptInterfaceSettings()">Accept settings</button>
             <button onclick="openCloseChatHistory()">Chat History</button>
             <button onclick="openCloseOptions()">Back</button>
         </div>
 
         <div id="idMainMenuChat" class="menu-center-options">
             <span>Chat History</span>
-            <button onclick="chatHistoryTurnClick()">History<input type="checkbox" id="turn-chat-history" onclick="chatHistoryTurnClick()"/></button>
-            <button id="btnSet-CH">How many msg <b id="range-value">13</b><input id="inptSet-CH" type="range" min="1" max="999" value="13" oninput="chatHistorySetUpdate(this.value)"></input></button>
+            <button onclick="chatHistoryTurnClick()">History<input type="checkbox" id="turn-chat-history"
+                    onclick="chatHistoryTurnClick()" /></button>
+            <button id="btnSet-CH">How many msg <b id="range-value">13</b><input id="inptSet-CH" type="range" min="1"
+                    max="999" value="13" oninput="chatHistorySetUpdate(this.value)"></input></button>
+            <button onclick="acceptChatSettings()">Accept settings</button>
             <button onclick="openCloseChatHistory()">Back</button>
         </div>
     </div>
@@ -69,13 +75,24 @@
 
 {{!-- SCRIPT FOR OPTIONS --}}
 <script>
-    
+
     function openCloseOptions() {
         const MenuOptions = document.getElementById("idMainMenuOptions");
         const MenuNav = document.getElementById("idMainMenuNavBtn");
         if (MenuNav.style.display !== 'none') {
             MenuNav.style.display = 'none';
             MenuOptions.style.display = 'grid';
+            fetch('/getinterfacesettings', {
+                method: 'GET'
+            })
+                .then(r => r.json())
+                .then(j => {
+                    if (j.status === 200) {
+                        const { sound, fullscreen } = j.data;
+                        document.getElementById("turn-sound").checked = sound;
+                        document.getElementById("turn-fullscreen").checked = fullscreen;
+                    }
+                })
         }
         else {
             // here need to save sound and screen changes
@@ -91,6 +108,34 @@
         if (MenuOptions.style.display !== 'none') {
             MenuOptions.style.display = 'none';
             MenuChat.style.display = 'grid';
+            fetch('/getchatsettings', {
+                method: 'GET'
+            })
+                .then(r => r.json())
+                .then(j => {
+                    if (j.status === 200) {
+                        const { history, historyLength } = j.data;
+                        const inpt = document.getElementById("turn-chat-history");
+                        inpt.checked = history;
+                        const button = document.getElementById("btnSet-CH");
+                        const range = document.getElementById("range-value");
+                        const input = document.getElementById("inptSet-CH");
+                        if (!history) {
+                            button.disabled = false;
+                            range.disabled = false;
+                            range.innerText = historyLength;
+                            input.disabled = false;
+                            input.value = historyLength;
+                            button.style.backgroundColor = '#9d11a1';
+                        }
+                        else {
+                            button.disabled = true;
+                            range.disabled = true;
+                            input.disabled = true;
+                            button.style.backgroundColor = '#733f75';
+                        }
+                    }
+                })
         }
         else {
             // here need to save all 'MenuChat' changes
@@ -100,7 +145,42 @@
             MenuChat.style.display = 'none';
         }
     }
-
+    async function acceptInterfaceSettings() {
+        getUserName().then(username => {
+            const turnSoundCheckbox = document.getElementById('turn-sound');
+            const turnFullscreenCheckbox = document.getElementById('turn-fullscreen');
+            fetch('/setinterfacesettings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, sound: turnSoundCheckbox.checked, fullscreen: turnFullscreenCheckbox.checked })
+            }).then(r => r.json())
+                .then(j => {
+                    if (j.status === 200) {
+                        window.location.reload();
+                    }
+                })
+        });
+    }
+    async function acceptChatSettings() {
+        getUserName().then(username => {
+            const turnChatCheckbox = document.getElementById('turn-chat-history');
+            const chatRange = document.getElementById('inptSet-CH');
+            fetch('/setchatsettings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, history: turnChatCheckbox.checked, historyLength: chatRange.value })
+            }).then(r => r.json())
+                .then(j => {
+                    if (j.status === 200) {
+                        window.location.reload();
+                    }
+                })
+        });
+    }
     async function exitFromGame() {
         fetch('/logout', {
             method: 'GET'
@@ -112,7 +192,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        
+
         // here need to set user-options
 
         const exitButton = document.getElementById("btnExit");
@@ -120,14 +200,14 @@
             exitButton.addEventListener('click', exitFromGame);
         }
     });
-    
+
     function soundTurnClick() {
         const inpt = document.getElementById("turn-sound");
         inpt.checked = !inpt.checked;
     }
     function fullscreenTurnClick() {
         const inpt = document.getElementById("turn-fullscreen");
-        if(inpt.checked) {
+        if (inpt.checked) {
             document.exitFullscreen();
         }
         else {
@@ -141,8 +221,8 @@
         const button = document.getElementById("btnSet-CH");
         const range = document.getElementById("range-value");
         const input = document.getElementById("inptSet-CH");
-        
-        if(inpt.checked) {
+
+        if (inpt.checked) {
             // if inpt.checked == true => need turn-off chat history (show only n [1 - 999] msg)
 
             button.disabled = false;

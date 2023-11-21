@@ -66,7 +66,26 @@ class UserService {
             }
         }
         catch (error) {
-            console.log(`UserService(addNewUser): ${error}`);
+            console.log(`UserService(getUserByCredentials): ${error}`);
+        }
+        return null;
+    }
+
+    getUserByNickname = async (login: string) => {
+        try {
+            const users = await User.findAll({
+                where: {
+                    name: {
+                        [Op.eq]: login
+                    }
+                }
+            });
+            if (users.length !== 0) {
+                return users[0];
+            }
+        }
+        catch (error) {
+            console.log(`UserService(getUserByNickname): ${error}`);
         }
         return null;
     }

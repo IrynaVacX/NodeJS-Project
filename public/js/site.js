@@ -29,6 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    if (window.location.href.includes('/menu')) {
+        fetch('/getinterfacesettings', {
+            method: 'GET'
+        })
+            .then(r => r.json())
+            .then(j => {
+                if (j.status === 200) {
+                    const { sound, fullscreen } = j.data;
+                    if (fullscreen) {
+                        document.documentElement.requestFullscreen();
+                    }
+                    else {
+                        document.exitFullscreen();
+                    }
+
+                }
+            })
+    }
 })
 
 function sendRegistrationRequest(data) {
@@ -112,7 +130,7 @@ function sendLoginRequest(data) {
                     console.log(j);
                     // wrong request data
                     // missing fields: login, password
-                    
+
 
                     break;
                 case 403:
