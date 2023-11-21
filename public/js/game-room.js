@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldHeight = 920;
     let lastDirection = null;
     let count = 0;
-    let timeLeft = 10 * 60; // 10 минут в секундах
+    let timeLeft = 10 * 60;
     const timerElement = document.getElementById('timer');
 
     function updateTimer() {
@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ArrowUp: false,
         ArrowDown: false,
         ArrowLeft: false,
-        ArrowRight: false
+        ArrowRight: false,
+        isActive: false
     };
 
     function checkCollision(player, element) {
@@ -64,43 +65,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function moveSquare() {
-        if (isMoving.ArrowUp) {
-            posY = Math.max(0, posY - speed);
-            player.style.top = posY + 'px';
-            if (lastDirection !== 'up') {
-                lastDirection = 'up';
-                player.src = "assets/cat/up.gif";
-            }
-        }
-        if (isMoving.ArrowDown) {
-            posY = Math.min(fieldHeight - playerSize, posY + speed);
-            player.style.top = posY + 'px';
-            if (lastDirection !== 'down') {
-                lastDirection = 'down';
-                player.src = "assets/cat/down.gif";
-            }
-        }
-        if (isMoving.ArrowLeft) {
-            posX = Math.max(0, posX - speed);
-            player.style.left = posX + 'px';
-
-            if (lastDirection !== 'left') {
-                lastDirection = 'left';
-                player.src = "assets/cat/left.gif";
-            }
-        }
-        if (isMoving.ArrowRight) {
-            posX = Math.min(fieldWidth - playerSize, posX + speed);
-            player.style.left = posX + 'px';
-            
-            if (lastDirection !== 'right') {
-                lastDirection = 'right';
-                player.src = "assets/cat/right.gif";
-            }
-        }
-        if (!isMoving.ArrowUp && !isMoving.ArrowDown && !isMoving.ArrowLeft && !isMoving.ArrowRight) {
+        if (!isMoving.ArrowUp && !isMoving.ArrowDown && !isMoving.ArrowLeft && !isMoving.ArrowRight)
+        {
             setPlayerImage(lastDirection || 'idle');
+            isMoving.isActive = false;
         }
+        else
+        {
+            if (isMoving.ArrowUp) {
+                posY = Math.max(0, posY - speed);
+                player.style.top = posY + 'px';
+                if (lastDirection !== 'up' || !isMoving.isActive) {
+                    lastDirection = 'up';
+                    player.src = "assets/cat/up.gif";
+                }
+            }
+            if (isMoving.ArrowDown) {
+                posY = Math.min(fieldHeight - playerSize, posY + speed);
+                player.style.top = posY + 'px';
+                if (lastDirection !== 'down' || !isMoving.isActive) {
+                    lastDirection = 'down';
+                    player.src = "assets/cat/down.gif";
+                }
+            }
+            if (isMoving.ArrowLeft) {
+                posX = Math.max(0, posX - speed);
+                player.style.left = posX + 'px';
+    
+                if (lastDirection !== 'left' || !isMoving.isActive) {
+                    lastDirection = 'left';
+                    player.src = "assets/cat/left.gif";
+                }
+            }
+            if (isMoving.ArrowRight) {
+                posX = Math.min(fieldWidth - playerSize, posX + speed);
+                player.style.left = posX + 'px';
+                
+                if (lastDirection !== 'right' || !isMoving.isActive) {
+                    lastDirection = 'right';
+                    player.src = "assets/cat/right.gif";
+                }
+            }
+            isMoving.isActive = true;
+        }
+        
        document.querySelectorAll('.element').forEach(element => {
         if (checkCollision(player, element)) {
             element.remove();
@@ -127,6 +135,7 @@ function addRandomElement() {
     const field = document.getElementById('free-move-zone');
     const element = document.createElement('div');
     element.className = 'element';
+    element.style.backgroundImage = "url('../assets/toads/toad" + (Math.floor(Math.random() * 3) + 1) + ".gif')";
 
     // Случайная позиция в пределах поля
     const x = Math.random() * (920 - 50);
