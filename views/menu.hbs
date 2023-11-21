@@ -137,21 +137,20 @@
     }
     function chatHistoryTurnClick() {
         const inpt = document.getElementById("turn-chat-history");
+
+        const button = document.getElementById("btnSet-CH");
+        const range = document.getElementById("range-value");
+        const input = document.getElementById("inptSet-CH");
+        
         if(inpt.checked) {
             // if inpt.checked == true => need turn-off chat history (show only n [1 - 999] msg)
 
-            const button = document.getElementById("btnSet-CH");
-            const range = document.getElementById("range-value");
-            const input = document.getElementById("inptSet-CH");
             button.disabled = false;
             range.disabled = false;
             input.disabled = false;
             button.style.backgroundColor = '#9d11a1';
         }
         else {
-            const button = document.getElementById("btnSet-CH");
-            const range = document.getElementById("range-value");
-            const input = document.getElementById("inptSet-CH");
             button.disabled = true;
             range.disabled = true;
             input.disabled = true;
