@@ -184,3 +184,19 @@ button{
   height: 50px;
   background-color: red;
 }
+#counter{
+  color: red;
+  background-color: black;
+  margin-left: 43%;
+  width: 100px;
+  margin-top: 20px;
+  position: absolute;
+}
+#timer{
+  color: red;
+  background-color: black;
+  margin-left: 50%;
+  width: 100px;
+  margin-top: 20px;
+  position: absolute;
+}
