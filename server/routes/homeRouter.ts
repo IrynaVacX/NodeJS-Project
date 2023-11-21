@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express"
-import { index, loader, register, menu, game_room, game_war, registerNewUser, authUser, logoutUser, getUsername, setChatSettings, setInterfaceSettings, getChatSettings, getInterfaceSettings } from "../controllers/homeController";
+import { index, loader, register, menu, game_room, game_war, registerNewUser, authUser, logoutUser, getUsername, setChatSettings, setInterfaceSettings, getChatSettings, getInterfaceSettings, getChatHistory } from "../controllers/homeController";
 
 const homeRouter = express.Router();
 
@@ -28,4 +28,5 @@ homeRouter.post('/setchatsettings', setChatSettings);
 homeRouter.post('/setinterfacesettings', setInterfaceSettings);
 homeRouter.get('/getchatsettings', getChatSettings);
 homeRouter.get('/getinterfacesettings', getInterfaceSettings);
+homeRouter.get('/getchathistory',getChatHistory);
 export { homeRouter }

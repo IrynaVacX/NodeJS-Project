@@ -3,6 +3,9 @@ import { FieldErrorMessageModel } from "../models/FieldErrorMessageModel";
 import { ResponseModel } from "../models/ResponseModel";
 import { userService } from "../../services/UserService";
 import { settingsService } from "../../services/UserSettingsService";
+import { globalChatService } from "../../services/GlobalChatService";
+import zlib from "zlib"
+
 
 let responseBody: ResponseModel;
 let contentType = 'application/json';
@@ -428,4 +431,37 @@ export const getInterfaceSettings = async (req: Request, res: Response) => {
         data: null
     }
     sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+}
+export const getChatHistory = async (req: Request, res: Response) => {
+    // @ts-ignore
+    if (!req.session.user) {
+        responseBody = {
+            status: 401,
+            statusMessage: 'Unauthorized',
+            data: null
+        }
+        sendResponse(res, responseBody.status, JSON.stringify(responseBody), contentType);
+        return;
+    }
+    // @ts-ignore
+    const user_id = req.session.user.userId;
+    let settings = await settingsService.getSettingsByUserId(user_id);
+    if (settings !== null) {
+        if (!settings.history) {
+            try {
+                let rows = await globalChatService.getMessagesAsArrayLimit(settings.historyLength);
+                if (rows !== null) {
+                    zlib.gzip(JSON.stringify(rows), (err, buffer) => {
+                        res.set('Content-Encoding', 'gzip');
+                        res.set('Content-Type', 'application/json');
+                        res.send(buffer);
+                    })
+                }
+            }
+            catch (err) {
+                console.error("Error fetching chat history : ", err);
+            };
+        }
+    }
+
 }
