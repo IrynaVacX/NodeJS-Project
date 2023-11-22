@@ -125,33 +125,35 @@ function sendLoginRequest(data) {
             --statusMessage
             --data is object array({fieldName, errorMessage}) 
             */
-            switch (j.status) {
-                case 400:
-                    console.log(j);
-                    // wrong request data
-                    // missing fields: login, password
+            if (j) {
+                switch (j.status) {
+                    case 400:
+                        console.log(j);
+                        // wrong request data
+                        // missing fields: login, password
 
 
-                    break;
-                case 403:
-                    console.log(j);
+                        break;
+                    case 403:
+                        console.log(j);
 
-                    if (Array.isArray(j.data)) {
-                        let errorMessages = j.data;
-                        // errorMessages[0].fieldName
-                        // errorMessages[0].errorMessage
+                        if (Array.isArray(j.data)) {
+                            let errorMessages = j.data;
+                            // errorMessages[0].fieldName
+                            // errorMessages[0].errorMessage
 
-                    }
+                        }
 
-                    break;
-                case 500:
-                    console.log(j);
-                    // j.statusMessage
-                    break;
-                // case 201:
-                //     console.log(j);
-                //     window.location.href = "/menu";
-                //     break;
+                        break;
+                    case 500:
+                        console.log(j);
+                        // j.statusMessage
+                        break;
+                    // case 201:
+                    //     console.log(j);
+                    //     window.location.href = "/menu";
+                    //     break;
+                }
             }
         })
         .catch((error) => {
